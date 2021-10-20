@@ -12,7 +12,8 @@ def pulp_cli_vars(pulp_cli_vars):
     result.update(pulp_cli_vars)
     result.update(
         {
-            "OSTREE_REMOTE_URL": urljoin(PULP_FIXTURES_URL, "/ostree"),
+            "OSTREE_REMOTE_URL": urljoin(PULP_FIXTURES_URL, "/ostree/small/"),
+            "OSTREE_DOWNLOADED_REPO_PATH": "fixtures.pulpproject.org/ostree",
         }
     )
     return result
