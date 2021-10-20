@@ -14,7 +14,7 @@ project = "pulp-cli"
 message = subprocess.check_output(["git", "log", "--format=%B", "-n 1", sha]).decode("utf-8")
 
 g = Github()
-repo = g.get_repo("pulp/pulp-cli")
+repo = g.get_repo("pulp/pulp-cli-ostree")
 
 
 def __check_status(issue):
