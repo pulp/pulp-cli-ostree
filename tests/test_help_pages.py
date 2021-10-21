@@ -15,7 +15,9 @@ def traverse_commands(command, args):
             yield from traverse_commands(sub, args + [name])
 
 
-@pytest.mark.parametrize("args", traverse_commands(main.commands["ostree"], ["ostree"]), ids=" ".join)
+@pytest.mark.parametrize(
+    "args", traverse_commands(main.commands["ostree"], ["ostree"]), ids=" ".join
+)
 @patch("pulpcore.cli.common.PulpContext.api", new_callable=PropertyMock)
 def test_access_help(_api, args):
     """Test, that all help screens are accessible without touching the api property."""
