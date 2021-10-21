@@ -13,10 +13,7 @@ except ImportError:
     plugins = find_packages(where="pulpcore/cli")
     plugin_packages = [f"pulpcore.cli.{plugin}" for plugin in plugins]
 
-plugin_entry_points = [
-    (package.rsplit(".", 1)[-1], package)
-    for package in plugin_packages
-]
+plugin_entry_points = [(package.rsplit(".", 1)[-1], package) for package in plugin_packages]
 
 
 setup(

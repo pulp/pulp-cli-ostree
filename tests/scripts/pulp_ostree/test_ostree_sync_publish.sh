@@ -34,6 +34,6 @@ expect_succ curl "$curl_opt" --head --fail "$PULP_BASE_URL/pulp/content/cli_test
 
 expect_succ pulp ostree distribution destroy --name "cli_test_ostree_distro"
 expect_succ pulp ostree publication destroy --href "$PUBLICATION_HREF"
-fi
 expect_succ pulp ostree repository destroy --name "cli_test_ostree_repository"
 expect_succ pulp ostree remote destroy --name "cli_test_ostree_remote"
+fi
