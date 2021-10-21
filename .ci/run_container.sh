@@ -21,7 +21,15 @@ else
   RM=""
 fi
 
-"${CONTAINER_RUNTIME}" run ${RM:+--rm} --detach --name "pulp-ephemeral" --volume "${BASEPATH}/settings:/etc/pulp" --publish "8080:80" "pulp/pulp:${IMAGE_TAG:-latest}"
+IMAGE_TAG="${IMAGE_TAG:-latest}"
+FROM_TAG="${FROM_TAG:-latest}"
+
+if [ "${CONTAINER_FILE:+x}" ]
+then
+  "${CONTAINER_RUNTIME}" build --file "${BASEPATH}/assets/${CONTAINER_FILE}" --build-arg FROM_TAG="${FROM_TAG}" --tag pulp/pulp:"${IMAGE_TAG}" .
+fi
+
+"${CONTAINER_RUNTIME}" run ${RM:+--rm} --detach --name "pulp-ephemeral" --volume "${BASEPATH}/settings:/etc/pulp" --publish "8080:80" "pulp/pulp:${IMAGE_TAG}"
 
 # shellcheck disable=SC2064
 trap "${CONTAINER_RUNTIME} stop pulp-ephemeral" EXIT
@@ -29,17 +37,19 @@ trap "${CONTAINER_RUNTIME} stop pulp-ephemeral" EXIT
 trap "${CONTAINER_RUNTIME} stop pulp-ephemeral" INT
 
 echo "Wait for pulp to start."
-for counter in $(seq 20)
+SUCCESS=0
+for _ in $(seq 20)
 do
   sleep 3
   if curl --fail http://localhost:8080/pulp/api/v3/status/ > /dev/null 2>&1
   then
     echo "SUCCESS."
+    SUCCESS=1
     break
   fi
   echo "."
 done
-if [ "$counter" = "0" ]
+if [ "$SUCCESS" = "0" ]
 then
   echo "FAIL."
   "${CONTAINER_RUNTIME}" images
