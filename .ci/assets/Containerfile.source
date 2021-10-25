@@ -1,0 +1,9 @@
+ARG FROM_TAG="latest"
+FROM pulp/pulp-ci-centos:${FROM_TAG}
+
+ARG PULP_OSTREE_VERSION=""
+
+RUN pip3 install --upgrade \
+  git+https://github.com/pulp/pulpcore@master \
+  git+https://github.com/pulp/pulp_ostree@master \
+  requests
