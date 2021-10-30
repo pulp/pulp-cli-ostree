@@ -53,6 +53,7 @@ jobs:
             from_tag: "latest"
             container_file: "Containerfile.source"
           - python: "3.6"
+            pulp_cli: "0.12.0"
             image_tag: "latest"
             from_tag: "latest"
             container_file: "Containerfile"
@@ -64,6 +65,12 @@ jobs:
           python-version: ${{ matrix.python }}
       - name: Install Test Dependencies
         run: pip install -r test_requirements.txt
+      - name: Install pulp-cli from source
+        run: pip install git+https://github.com/pulp/pulp-cli@main
+        if: ${{ ! matrix.pulp_cli }}
+      - name: Install specific pulp-cli version
+        run: pip install pulp_cli==${{ matrix.pulp_cli }}
+        if: ${{ matrix.pulp_cli }}
       - name: Run tests
         env:
           IMAGE_TAG: ${{ matrix.image_tag }}

@@ -1,8 +1,16 @@
 #!/bin/sh
 
+# This file is shared between some projects please keep all copies in sync
+# Known places:
+#   - https://github.com/pulp/pulp-cli/blob/main/.ci/run_container.sh
+#   - https://github.com/pulp/pulp-cli-deb/blob/develop/.ci/run_container.sh
+#   - https://github.com/pulp/pulp-cli-ostree/blob/main/.ci/run_container.sh
+#   - https://github.com/pulp/squeezer/blob/develop/tests/run_container.sh
+
 set -eu
 
 BASEPATH="$(dirname "$(readlink -f "$0")")"
+export BASEPATH
 
 if [ -z "${CONTAINER_RUNTIME:+x}" ]
 then
@@ -13,6 +21,7 @@ then
     CONTAINER_RUNTIME=docker
   fi
 fi
+export CONTAINER_RUNTIME
 
 if [ -z "${KEEP_CONTAINER:+x}" ]
 then
@@ -37,19 +46,17 @@ trap "${CONTAINER_RUNTIME} stop pulp-ephemeral" EXIT
 trap "${CONTAINER_RUNTIME} stop pulp-ephemeral" INT
 
 echo "Wait for pulp to start."
-SUCCESS=0
-for _ in $(seq 20)
+for counter in $(seq 20 -1 0)
 do
   sleep 3
   if curl --fail http://localhost:8080/pulp/api/v3/status/ > /dev/null 2>&1
   then
     echo "SUCCESS."
-    SUCCESS=1
     break
   fi
   echo "."
 done
-if [ "$SUCCESS" = "0" ]
+if [ "$counter" = "0" ]
 then
   echo "FAIL."
   "${CONTAINER_RUNTIME}" images
@@ -63,5 +70,10 @@ curl -s http://localhost:8080/pulp/api/v3/status/ | jq '.versions|map({key: .com
 
 # Set admin password
 "${CONTAINER_RUNTIME}" exec "pulp-ephemeral" pulpcore-manager reset-admin-password --password password
+
+if [ -d "${BASEPATH}/container_setup.d/" ]
+then
+  run-parts --regex '^[0-9]+-[-_[:alnum:]]*\.sh$' "${BASEPATH}/container_setup.d/"
+fi
 
 PULP_LOGGING="${CONTAINER_RUNTIME}" "$@"
