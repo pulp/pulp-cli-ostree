@@ -75,6 +75,7 @@ class PulpOstreeRepositoryContext(PulpRepositoryContext):
     UPDATE_ID = "repositories_ostree_ostree_partial_update"
     DELETE_ID = "repositories_ostree_ostree_delete"
     SYNC_ID = "repositories_ostree_ostree_sync"
+    MODIFY_ID = "repositories_ostree_ostree_modify"
     IMPORT_ID: ClassVar[str] = "repositories_ostree_ostree_import_commits"
     VERSION_CONTEXT = PulpOstreeRepositoryVersionContext
     CAPABILITIES = {
