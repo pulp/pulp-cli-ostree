@@ -20,6 +20,7 @@ from pulpcore.cli.common.generic import (
     label_select_option,
     list_command,
     name_option,
+    repository_content_command,
     repository_href_option,
     repository_option,
     resource_option,
@@ -31,7 +32,12 @@ from pulpcore.cli.common.generic import (
 from pulpcore.cli.core.context import PulpArtifactContext
 from pulpcore.cli.core.generic import task_command
 
-from pulpcore.cli.ostree.context import PulpOstreeRemoteContext, PulpOstreeRepositoryContext
+from pulpcore.cli.ostree.context import (
+    PulpOstreeCommitContentContext,
+    PulpOstreeRefContentContext,
+    PulpOstreeRemoteContext,
+    PulpOstreeRepositoryContext,
+)
 
 remote_option = resource_option(
     "--remote",
@@ -79,6 +85,33 @@ repository.add_command(destroy_command(decorators=lookup_options))
 repository.add_command(task_command(decorators=nested_lookup_options))
 repository.add_command(version_command(decorators=nested_lookup_options))
 repository.add_command(label_command(decorators=nested_lookup_options))
+
+
+def ref_name_callback(ctx: click.Context, param: click.Parameter, value: str) -> str:
+    if value:
+        pulp_ctx = ctx.find_object(PulpContext)
+        assert pulp_ctx is not None
+        ctx.obj = PulpOstreeRefContentContext(pulp_ctx, entity={"name": value})
+    return value
+
+
+def commit_checksum_callback(ctx: click.Context, param: click.Parameter, value: str) -> str:
+    if value:
+        pulp_ctx = ctx.find_object(PulpContext)
+        assert pulp_ctx is not None
+        ctx.obj = PulpOstreeCommitContentContext(pulp_ctx, entity={"checksum": value})
+    return value
+
+
+ref_options = [click.option("--ref", expose_value=False, callback=ref_name_callback)]
+commit_options = [click.option("--commit", expose_value=False, callback=commit_checksum_callback)]
+repository.add_command(
+    repository_content_command(
+        contexts={"ref": PulpOstreeRefContentContext, "commit": PulpOstreeCommitContentContext},
+        add_decorators=commit_options + ref_options,
+        remove_decorators=commit_options + ref_options,
+    )
+)
 
 
 @repository.command()
