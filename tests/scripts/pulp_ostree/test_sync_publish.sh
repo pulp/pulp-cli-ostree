@@ -28,7 +28,3 @@ REPOSITORY_VERSION_REPO_HREF=$(echo "$OUTPUT" | jq -r ".pulp_href")versions/0/
 if [ "$REPOSITORY_VERSION_DIST_HREF" != "$REPOSITORY_VERSION_REPO_HREF" ]; then
   echo "Repository versions are not equal" && exit 1
 fi
-
-expect_succ pulp ostree distribution destroy --name "cli_test_ostree_distro"
-expect_succ pulp ostree repository destroy --name "cli_test_ostree_repository"
-expect_succ pulp ostree remote destroy --name "cli_test_ostree_remote"
