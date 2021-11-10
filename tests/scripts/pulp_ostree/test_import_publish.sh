@@ -20,6 +20,3 @@ expect_succ pulp ostree repository import-commits --name "cli_test_ostree_reposi
 expect_succ pulp ostree distribution create --name "cli_test_ostree_distro" \
   --base-path "cli_test_ostree_distro" \
   --repository "cli_test_ostree_repository"
-
-expect_succ pulp ostree distribution destroy --name "cli_test_ostree_distro"
-expect_succ pulp ostree repository destroy --name "cli_test_ostree_repository"
