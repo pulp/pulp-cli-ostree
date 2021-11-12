@@ -12,6 +12,7 @@ from pulpcore.cli.common.context import (
     pass_repository_context,
 )
 from pulpcore.cli.common.generic import (
+    GroupOption,
     chunk_size_option,
     create_command,
     destroy_command,
@@ -87,15 +88,15 @@ repository.add_command(version_command(decorators=nested_lookup_options))
 repository.add_command(label_command(decorators=nested_lookup_options))
 
 
-def ref_name_callback(ctx: click.Context, param: click.Parameter, value: str) -> str:
+def ref_callback(ctx: click.Context, param: click.Parameter, value: Any) -> Any:
     if value:
         pulp_ctx = ctx.find_object(PulpContext)
         assert pulp_ctx is not None
-        ctx.obj = PulpOstreeRefContentContext(pulp_ctx, entity={"name": value})
+        ctx.obj = PulpOstreeRefContentContext(pulp_ctx, entity=value)
     return value
 
 
-def commit_checksum_callback(ctx: click.Context, param: click.Parameter, value: str) -> str:
+def commit_callback(ctx: click.Context, param: click.Parameter, value: str) -> str:
     if value:
         pulp_ctx = ctx.find_object(PulpContext)
         assert pulp_ctx is not None
@@ -103,15 +104,40 @@ def commit_checksum_callback(ctx: click.Context, param: click.Parameter, value: 
     return value
 
 
-ref_options = [click.option("--ref", expose_value=False, callback=ref_name_callback)]
-commit_options = [click.option("--commit", expose_value=False, callback=commit_checksum_callback)]
-repository.add_command(
-    repository_content_command(
-        contexts={"ref": PulpOstreeRefContentContext, "commit": PulpOstreeCommitContentContext},
-        add_decorators=commit_options + ref_options,
-        remove_decorators=commit_options + ref_options,
-    )
+ref_options = [
+    click.option("--name", cls=GroupOption, expose_value=False, group=["checksum"]),
+    click.option(
+        "--checksum", cls=GroupOption, expose_value=False, group=["name"], callback=ref_callback
+    ),
+]
+ref_list_options = [click.option("-t", "--type", "type", type=click.Choice(["ref"]), default="ref")]
+ref_content_command = repository_content_command(
+    name="ref",
+    contexts={"ref": PulpOstreeRefContentContext},
+    add_decorators=ref_options,
+    remove_decorators=ref_options,
+    list_decorators=ref_list_options,
 )
+
+commit_options = [click.option("--checksum", expose_value=False, callback=commit_callback)]
+commit_list_options = [
+    click.option("-t", "--type", "type", type=click.Choice(["commit"]), default="commit")
+]
+commit_content_command = repository_content_command(
+    name="commit",
+    contexts={"commit": PulpOstreeCommitContentContext},
+    add_decorators=commit_options,
+    remove_decorators=commit_options,
+    list_decorators=commit_list_options,
+)
+
+general_list_content_command = repository_content_command(
+    contexts={"ref": PulpOstreeRefContentContext, "commit": PulpOstreeCommitContentContext}
+)
+
+repository.add_command(ref_content_command)
+repository.add_command(commit_content_command)
+repository.add_command(general_list_content_command)
 
 
 @repository.command()

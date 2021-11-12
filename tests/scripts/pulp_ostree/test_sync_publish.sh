@@ -7,6 +7,7 @@ cleanup() {
   pulp ostree remote destroy --name "cli_test_ostree_remote" || true
   pulp ostree repository destroy --name "cli_test_ostree_repository" || true
   pulp ostree distribution destroy --name "cli_test_ostree_distro" || true
+  pulp orphan cleanup || true
 }
 trap cleanup EXIT
 
