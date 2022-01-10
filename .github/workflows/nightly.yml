@@ -43,6 +43,8 @@ jobs:
       - name: Install specific pulp-cli version
         run: pip install pulp_cli==${{ matrix.pulp_cli }}
         if: ${{ matrix.pulp_cli }}
+      - name: Install the ostree utility
+        run: sudo apt-get install ostree
       - name: Run tests
         env:
           IMAGE_TAG: ${{ matrix.image_tag }}
