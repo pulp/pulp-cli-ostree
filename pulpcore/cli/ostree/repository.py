@@ -4,6 +4,7 @@ from typing import IO, Any, Dict, Optional
 import click
 from pulpcore.cli.common.context import (
     EntityFieldDefinition,
+    PluginRequirement,
     PulpContext,
     PulpEntityContext,
     PulpRemoteContext,
@@ -21,6 +22,7 @@ from pulpcore.cli.common.generic import (
     label_select_option,
     list_command,
     name_option,
+    pulp_option,
     repository_content_command,
     repository_href_option,
     repository_option,
@@ -180,8 +182,14 @@ def sync(
     required=True,
     help=_("Name of a repository which contains the imported commits"),
 )
-@click.option("--ref", type=str, required=False, help=_("Name of a ref "))
-@click.option("--parent_commit")
+@click.option("--ref", type=str, required=False, help=_("Name of a ref"))
+@pulp_option(
+    "--parent_commit",
+    type=str,
+    required=False,
+    help=_("Name of a parent commit"),
+    needs_plugins=[PluginRequirement("ostree", max="2.0.0a3.dev")],
+)
 @pass_repository_context
 @pass_pulp_context
 def import_commits(
@@ -193,19 +201,23 @@ def import_commits(
     ref: Optional[str],
     parent_commit: Optional[str],
 ) -> None:
-    if not all((ref, parent_commit)) and any((ref, parent_commit)):
-        raise click.ClickException(
-            "Please specify both the ref and parent_commit if you want to add new child "
-            "commits to the existing repository"
-        )
-
     repository_href = repository_ctx.pulp_href
     artifact_href = PulpArtifactContext(pulp_ctx).upload(file, chunk_size)
 
-    repository_ctx.import_commits(
-        href=repository_href,
-        artifact=artifact_href,
-        repository_name=repository_name,
-        ref=ref,
-        parent_commit=parent_commit,
-    )
+    kwargs = {
+        "href": repository_href,
+        "artifact": artifact_href,
+        "repository_name": repository_name,
+        "ref": ref,
+    }
+
+    if pulp_ctx.has_plugin(PluginRequirement("ostree", max="2.0.0a3.dev")):
+        if not all((ref, parent_commit)) and any((ref, parent_commit)):
+            raise click.ClickException(
+                "Please specify both the ref and parent_commit if you want to add new child "
+                "commits to the existing repository"
+            )
+
+        kwargs["parent_commit"] = parent_commit
+
+    repository_ctx.import_commits(**kwargs)
