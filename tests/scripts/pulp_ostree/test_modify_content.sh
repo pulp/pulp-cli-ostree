@@ -26,30 +26,30 @@ REF_NAME2=$(echo "$OUTPUT" | jq -r ".[1].name")
 expect_succ pulp ostree repository create --name "cli_test_ostree_repository2"
 
 # add content to the second repository
-pulp ostree repository commit add --repository "cli_test_ostree_repository2" \
+expect_succ pulp ostree repository commit add --repository "cli_test_ostree_repository2" \
   --checksum "$COMMIT_CHECKSUM1"
-pulp ostree repository ref add --repository "cli_test_ostree_repository2" \
+expect_succ pulp ostree repository ref add --repository "cli_test_ostree_repository2" \
   --name "$REF_NAME2" \
   --checksum "$COMMIT_CHECKSUM2"
 
 # remove the added content from the second repository
-pulp ostree repository commit remove --repository "cli_test_ostree_repository2" \
+expect_succ pulp ostree repository commit remove --repository "cli_test_ostree_repository2" \
   --checksum "$COMMIT_CHECKSUM1"
-pulp ostree repository ref remove --repository "cli_test_ostree_repository2" \
+expect_succ pulp ostree repository ref remove --repository "cli_test_ostree_repository2" \
   --name "$REF_NAME2" \
   --checksum "$COMMIT_CHECKSUM2"
 
 # remove the original content from the first repository
-pulp ostree repository commit remove --repository "cli_test_ostree_repository1" \
+expect_succ pulp ostree repository commit remove --repository "cli_test_ostree_repository1" \
   --checksum "$COMMIT_CHECKSUM1"
-pulp ostree repository ref remove --repository "cli_test_ostree_repository1" \
+expect_succ pulp ostree repository ref remove --repository "cli_test_ostree_repository1" \
   --name "$REF_NAME2" \
   --checksum "$COMMIT_CHECKSUM2"
 
 # add the content back to the first repository
-pulp ostree repository commit add --repository "cli_test_ostree_repository1" \
+expect_succ pulp ostree repository commit add --repository "cli_test_ostree_repository1" \
   --checksum "$COMMIT_CHECKSUM1"
-pulp ostree repository ref add --repository "cli_test_ostree_repository1" \
+expect_succ pulp ostree repository ref add --repository "cli_test_ostree_repository1" \
   --name "$REF_NAME2" \
   --checksum "$COMMIT_CHECKSUM2"
 
