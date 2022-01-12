@@ -10,3 +10,12 @@
 
 [//]: # (towncrier release notes start)
 
+## 0.0.1 (2022-01-12)
+
+### Features
+
+- Added the CLI for basic workflows (i.e., managing, syncing, importing repositories).
+  [#5](https://github.com/pulp/pulp-cli-ostree/issues/5)
+
+
+---
