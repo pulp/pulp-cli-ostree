@@ -19,7 +19,7 @@ plugin_entry_points = [(package.rsplit(".", 1)[-1], package) for package in plug
 setup(
     name="pulp-cli-ostree",
     description="Command line interface to talk to pulpcore's REST API. (OSTree plugin commands)",
-    version="0.0.1",
+    version="0.0.2.dev",
     packages=plugin_packages,
     package_data={package: ["py.typed"] for package in plugin_packages},
     python_requires=">=3.6",
