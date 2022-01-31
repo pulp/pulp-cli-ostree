@@ -1,5 +1,5 @@
 ARG FROM_TAG="latest"
-FROM pulp/pulp-ci-centos:${FROM_TAG}
+FROM ghcr.io/pulp/pulp-ci-centos:${FROM_TAG}
 
 ARG PULP_OSTREE_VERSION=""
 
