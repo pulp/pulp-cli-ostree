@@ -23,6 +23,11 @@ COMMIT_CHECKSUM1=$(echo "$OUTPUT" | jq -r ".[0].checksum")
 COMMIT_CHECKSUM2=$(echo "$OUTPUT" | jq -r ".[1].checksum")
 REF_NAME2=$(echo "$OUTPUT" | jq -r ".[1].name")
 
+expect_succ pulp ostree repository content list --repository "cli_test_ostree_repository1" \
+  --type "config"
+
+CONFIG_HREF=$(echo "$OUTPUT" | jq -r ".[0].pulp_href")
+
 expect_succ pulp ostree repository create --name "cli_test_ostree_repository2"
 
 # add content to the second repository
@@ -31,6 +36,8 @@ expect_succ pulp ostree repository commit add --repository "cli_test_ostree_repo
 expect_succ pulp ostree repository ref add --repository "cli_test_ostree_repository2" \
   --name "$REF_NAME2" \
   --checksum "$COMMIT_CHECKSUM2"
+expect_succ pulp ostree repository config add --repository "cli_test_ostree_repository2" \
+  --pulp_href "$CONFIG_HREF"
 
 # remove the added content from the second repository
 expect_succ pulp ostree repository commit remove --repository "cli_test_ostree_repository2" \
@@ -38,6 +45,8 @@ expect_succ pulp ostree repository commit remove --repository "cli_test_ostree_r
 expect_succ pulp ostree repository ref remove --repository "cli_test_ostree_repository2" \
   --name "$REF_NAME2" \
   --checksum "$COMMIT_CHECKSUM2"
+expect_succ pulp ostree repository config remove --repository "cli_test_ostree_repository2" \
+  --pulp_href "$CONFIG_HREF"
 
 # remove the original content from the first repository
 expect_succ pulp ostree repository commit remove --repository "cli_test_ostree_repository1" \
@@ -61,6 +70,10 @@ expect_succ pulp ostree repository ref list --repository "cli_test_ostree_reposi
 expect_succ pulp ostree repository commit list --repository "cli_test_ostree_repository1"
 expect_succ pulp ostree repository commit list --repository "cli_test_ostree_repository1" \
   --type "commit"
+
+expect_succ pulp ostree repository config list --repository "cli_test_ostree_repository1"
+expect_succ pulp ostree repository config list --repository "cli_test_ostree_repository1" \
+  --type "config"
 
 expect_succ pulp ostree repository content list --repository "cli_test_ostree_repository1"
 
