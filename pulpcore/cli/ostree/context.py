@@ -29,6 +29,14 @@ class PulpOstreeRefContentContext(PulpContentContext):
     READ_ID = "content_ostree_refs_read"
 
 
+class PulpOstreeConfigContentContext(PulpContentContext):
+    ENTITY = _("config content")
+    ENTITIES = _("config content")
+    HREF = "ostree_ostree_config_href"
+    LIST_ID = "content_ostree_configs_list"
+    READ_ID = "content_ostree_configs_read"
+
+
 class PulpOstreeDistributionContext(PulpEntityContext):
     ENTITY = _("ostree distribution")
     ENTITIES = _("ostree distributions")

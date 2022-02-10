@@ -37,6 +37,7 @@ from pulpcore.cli.core.generic import task_command
 
 from pulpcore.cli.ostree.context import (
     PulpOstreeCommitContentContext,
+    PulpOstreeConfigContentContext,
     PulpOstreeRefContentContext,
     PulpOstreeRemoteContext,
     PulpOstreeRepositoryContext,
@@ -48,9 +49,7 @@ remote_option = resource_option(
     default_type="ostree",
     context_table={"ostree:ostree": PulpOstreeRemoteContext},
     href_pattern=PulpRemoteContext.HREF_PATTERN,
-    help=_(
-        "Remote used for synching in the form '[[<plugin>:]<resource_type>:]<name>' or by href."
-    ),
+    help=_("Remote used for syncing in the form '[[<plugin>:]<resource_type>:]<name>' or by href."),
 )
 
 
@@ -106,6 +105,14 @@ def commit_callback(ctx: click.Context, param: click.Parameter, value: str) -> s
     return value
 
 
+def config_callback(ctx: click.Context, param: click.Parameter, value: str) -> str:
+    if value:
+        pulp_ctx = ctx.find_object(PulpContext)
+        assert pulp_ctx is not None
+        ctx.obj = PulpOstreeConfigContentContext(pulp_ctx, entity={"pulp_href": value})
+    return value
+
+
 ref_options = [
     click.option("--name", cls=GroupOption, expose_value=False, group=["checksum"]),
     click.option(
@@ -133,12 +140,29 @@ commit_content_command = repository_content_command(
     list_decorators=commit_list_options,
 )
 
+config_options = [click.option("--pulp_href", expose_value=False, callback=config_callback)]
+config_list_options = [
+    click.option("-t", "--type", "type", type=click.Choice(["config"]), default="config")
+]
+config_content_command = repository_content_command(
+    name="config",
+    contexts={"config": PulpOstreeConfigContentContext},
+    add_decorators=config_options,
+    remove_decorators=config_options,
+    list_decorators=config_list_options,
+)
+
 general_list_content_command = repository_content_command(
-    contexts={"ref": PulpOstreeRefContentContext, "commit": PulpOstreeCommitContentContext}
+    contexts={
+        "ref": PulpOstreeRefContentContext,
+        "commit": PulpOstreeCommitContentContext,
+        "config": PulpOstreeConfigContentContext,
+    }
 )
 
 repository.add_command(ref_content_command)
 repository.add_command(commit_content_command)
+repository.add_command(config_content_command)
 repository.add_command(general_list_content_command)
 
 
