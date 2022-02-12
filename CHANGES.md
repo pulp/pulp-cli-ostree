@@ -10,6 +10,17 @@
 
 [//]: # (towncrier release notes start)
 
+
+
+### Features
+
+- Added support for adding and removing config files across repositories.
+  [#14](https://github.com/pulp/pulp-cli-ostree/issues/14)
+
+
+---
+
+
 ## 0.0.1 (2022-01-12)
 
 ### Features
