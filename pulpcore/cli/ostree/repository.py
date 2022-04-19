@@ -119,37 +119,27 @@ ref_options = [
         "--checksum", cls=GroupOption, expose_value=False, group=["name"], callback=ref_callback
     ),
 ]
-ref_list_options = [click.option("-t", "--type", "type", type=click.Choice(["ref"]), default="ref")]
 ref_content_command = repository_content_command(
     name="ref",
     contexts={"ref": PulpOstreeRefContentContext},
     add_decorators=ref_options,
     remove_decorators=ref_options,
-    list_decorators=ref_list_options,
 )
 
 commit_options = [click.option("--checksum", expose_value=False, callback=commit_callback)]
-commit_list_options = [
-    click.option("-t", "--type", "type", type=click.Choice(["commit"]), default="commit")
-]
 commit_content_command = repository_content_command(
     name="commit",
     contexts={"commit": PulpOstreeCommitContentContext},
     add_decorators=commit_options,
     remove_decorators=commit_options,
-    list_decorators=commit_list_options,
 )
 
 config_options = [click.option("--pulp_href", expose_value=False, callback=config_callback)]
-config_list_options = [
-    click.option("-t", "--type", "type", type=click.Choice(["config"]), default="config")
-]
 config_content_command = repository_content_command(
     name="config",
     contexts={"config": PulpOstreeConfigContentContext},
     add_decorators=config_options,
     remove_decorators=config_options,
-    list_decorators=config_list_options,
 )
 
 general_list_content_command = repository_content_command(
