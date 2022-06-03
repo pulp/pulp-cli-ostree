@@ -66,6 +66,20 @@ class PulpOstreeRemoteContext(PulpRemoteContext):
     UPDATE_ID = "remotes_ostree_ostree_partial_update"
     DELETE_ID = "remotes_ostree_ostree_delete"
 
+    def preprocess_body(self, body: EntityDefinition) -> EntityDefinition:
+        body = super().preprocess_body(body)
+        if body and not self.pulp_ctx.has_plugin(PluginRequirement("ostree", min="2.0.0a6.dev")):
+            include_refs = body.pop("include_refs")
+            exclude_refs = body.pop("exclude_refs")
+            if any((include_refs, exclude_refs)):
+                self.pulp_ctx.needs_plugin(
+                    PluginRequirement(
+                        "ostree", min="2.0.0a6.dev", feature="including/excluding refs"
+                    )
+                )
+
+        return body
+
 
 class PulpOstreeRepositoryVersionContext(PulpRepositoryVersionContext):
     HREF = "ostree_ostree_repository_version_href"

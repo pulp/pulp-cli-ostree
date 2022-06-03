@@ -1,3 +1,6 @@
+import json
+from typing import Any
+
 import click
 from pulpcore.cli.common.context import PulpContext, pass_pulp_context
 from pulpcore.cli.common.generic import (
@@ -34,10 +37,27 @@ def remote(ctx: click.Context, pulp_ctx: PulpContext, remote_type: str) -> None:
         raise NotImplementedError()
 
 
+def parse_refs_list(ctx: click.Context, param: click.Parameter, value: Any) -> Any:
+    if value:
+        try:
+            value = json.loads(value)
+        except json.decoder.JSONDecodeError as error:
+            raise click.BadParameter(error.msg, ctx=ctx, param=param)
+        else:
+            if not all(isinstance(s, str) for s in value):
+                raise click.BadParameter(
+                    "A list of string values should be specified", ctx=ctx, param=param
+                )
+        return value
+    return []
+
+
 lookup_options = [href_option, name_option]
 ostree_remote_options = [
     click.option("--policy", type=click.Choice(["immediate", "on_demand"], case_sensitive=False)),
     click.option("--depth", type=click.INT, default=0),
+    click.option("--include-refs", callback=parse_refs_list),
+    click.option("--exclude-refs", callback=parse_refs_list),
 ]
 
 remote.add_command(list_command(decorators=[label_select_option]))
