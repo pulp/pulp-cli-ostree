@@ -14,6 +14,19 @@
 
 ### Features
 
+- Added support for specifying a list of refs that should be filtered out from a remote repository.
+  [#16](https://github.com/pulp/pulp-cli-ostree/issues/16)
+- Decoupled workflows for importing all refs and commits. To import everything from a tarball, one
+  should use the ``import-all`` command. When importing commits assigned to a specific ref, it is
+  recommended to use the ``import-commits`` command.
+  [#19](https://github.com/pulp/pulp-cli-ostree/issues/19)
+
+
+---
+
+
+### Features
+
 - Added support for adding and removing config files across repositories.
   [#14](https://github.com/pulp/pulp-cli-ostree/issues/14)
 
