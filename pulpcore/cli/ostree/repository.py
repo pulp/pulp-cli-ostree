@@ -186,7 +186,36 @@ def sync(
     repository_ctx.sync(href=repository_href, body=body)
 
 
-@repository.command()
+@repository.command(help=_("Import all refs and commits from a tarball"))
+@click.option("--file", type=click.File("rb"), required=True)
+@chunk_size_option
+@name_option
+@click.option(
+    "--repository_name",
+    type=str,
+    required=True,
+    help=_("Name of a repository which contains the imported commits"),
+)
+@pass_repository_context
+@pass_pulp_context
+def import_all(
+    pulp_ctx: PulpContext,
+    repository_ctx: PulpOstreeRepositoryContext,
+    file: IO[bytes],
+    chunk_size: int,
+    repository_name: str,
+) -> None:
+    repository_href = repository_ctx.pulp_href
+    artifact_href = PulpArtifactContext(pulp_ctx).upload(file, chunk_size)
+    kwargs = {
+        "href": repository_href,
+        "artifact": artifact_href,
+        "repository_name": repository_name,
+    }
+    repository_ctx.import_all(**kwargs)
+
+
+@repository.command(help=_("Import commits from a tarball to a specific ref"))
 @click.option("--file", type=click.File("rb"), required=True)
 @chunk_size_option
 @name_option

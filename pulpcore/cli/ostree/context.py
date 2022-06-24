@@ -98,12 +98,21 @@ class PulpOstreeRepositoryContext(PulpRepositoryContext):
     DELETE_ID = "repositories_ostree_ostree_delete"
     SYNC_ID = "repositories_ostree_ostree_sync"
     MODIFY_ID = "repositories_ostree_ostree_modify"
-    IMPORT_ID: ClassVar[str] = "repositories_ostree_ostree_import_commits"
+    IMPORT_ALL_ID: ClassVar[str] = "repositories_ostree_ostree_import_all"
+    IMPORT_COMMITS_ID: ClassVar[str] = "repositories_ostree_ostree_import_commits"
     VERSION_CONTEXT = PulpOstreeRepositoryVersionContext
     CAPABILITIES = {
         "sync": [PluginRequirement("ostree")],
+        "import_all": [PluginRequirement("ostree", min="2.0.0a6.dev")],
         "import_commits": [PluginRequirement("ostree")],
     }
+
+    def import_all(self, href: str, artifact: str, repository_name: str) -> Any:
+        body: Dict[str, Any] = {
+            "artifact": artifact,
+            "repository_name": repository_name,
+        }
+        return self.pulp_ctx.call(self.IMPORT_ALL_ID, parameters={self.HREF: href}, body=body)
 
     def import_commits(
         self,
@@ -124,7 +133,7 @@ class PulpOstreeRepositoryContext(PulpRepositoryContext):
             body["parent_commit"] = parent_commit
 
         return self.pulp_ctx.call(
-            self.IMPORT_ID,
+            self.IMPORT_COMMITS_ID,
             parameters={self.HREF: href},
             body=body,
         )

@@ -14,9 +14,17 @@ wget --no-parent -r "$OSTREE_REMOTE_URL"
 tar --exclude="index.html" -cvf "fixtures_small_repo.tar" -C "$OSTREE_DOWNLOADED_REPO_PATH" "small"
 
 expect_succ pulp ostree repository create --name "cli_test_ostree_repository"
-expect_succ pulp ostree repository import-commits --name "cli_test_ostree_repository" \
-  --file "fixtures_small_repo.tar" \
-  --repository_name "small"
+
+if pulp debug has-plugin --name "ostree" --min-version "2.0.0a6.dev"
+then
+  expect_succ pulp ostree repository import-all --name "cli_test_ostree_repository" \
+    --file "fixtures_small_repo.tar" \
+    --repository_name "small"
+else
+  expect_succ pulp ostree repository import-commits --name "cli_test_ostree_repository" \
+    --file "fixtures_small_repo.tar" \
+    --repository_name "small"
+fi
 
 tar -xvf fixtures_small_repo.tar
 # extract the latest commit checksum from the ref 'stable'
