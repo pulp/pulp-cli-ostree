@@ -17,6 +17,7 @@ class PulpOstreeCommitContentContext(PulpContentContext):
     ENTITY = _("commit content")
     ENTITIES = _("commit content")
     HREF = "ostree_ostree_commit_href"
+    ID_PREFIX = "content_ostree_commits"
     LIST_ID = "content_ostree_commits_list"
     READ_ID = "content_ostree_commits_read"
 
@@ -25,6 +26,7 @@ class PulpOstreeRefContentContext(PulpContentContext):
     ENTITY = _("ref content")
     ENTITIES = _("ref content")
     HREF = "ostree_ostree_ref_href"
+    ID_PREFIX = "content_ostree_refs"
     LIST_ID = "content_ostree_refs_list"
     READ_ID = "content_ostree_refs_read"
 
@@ -33,6 +35,7 @@ class PulpOstreeConfigContentContext(PulpContentContext):
     ENTITY = _("config content")
     ENTITIES = _("config content")
     HREF = "ostree_ostree_config_href"
+    ID_PREFIX = "content_ostree_configs"
     LIST_ID = "content_ostree_configs_list"
     READ_ID = "content_ostree_configs_read"
 
@@ -41,6 +44,7 @@ class PulpOstreeDistributionContext(PulpEntityContext):
     ENTITY = _("ostree distribution")
     ENTITIES = _("ostree distributions")
     HREF = "ostree_ostree_distribution_href"
+    ID_PREFIX = "distributions_ostree_ostree"
     LIST_ID = "distributions_ostree_ostree_list"
     READ_ID = "distributions_ostree_ostree_read"
     CREATE_ID = "distributions_ostree_ostree_create"
@@ -60,6 +64,7 @@ class PulpOstreeRemoteContext(PulpRemoteContext):
     ENTITY = _("ostree remote")
     ENTITIES = _("ostree remotes")
     HREF = "ostree_ostree_remote_href"
+    ID_PREFIX = "remotes_ostree_ostree"
     LIST_ID = "remotes_ostree_ostree_list"
     CREATE_ID = "remotes_ostree_ostree_create"
     READ_ID = "remotes_ostree_ostree_read"
@@ -83,6 +88,7 @@ class PulpOstreeRemoteContext(PulpRemoteContext):
 
 class PulpOstreeRepositoryVersionContext(PulpRepositoryVersionContext):
     HREF = "ostree_ostree_repository_version_href"
+    ID_PREFIX = "repositories_ostree_ostree_versions"
     LIST_ID = "repositories_ostree_ostree_versions_list"
     READ_ID = "repositories_ostree_ostree_versions_read"
     DELETE_ID = "repositories_ostree_ostree_versions_delete"
@@ -91,6 +97,7 @@ class PulpOstreeRepositoryVersionContext(PulpRepositoryVersionContext):
 
 class PulpOstreeRepositoryContext(PulpRepositoryContext):
     HREF = "ostree_ostree_repository_href"
+    ID_PREFIX = "repositories_ostree_ostree"
     LIST_ID = "repositories_ostree_ostree_list"
     READ_ID = "repositories_ostree_ostree_read"
     CREATE_ID = "repositories_ostree_ostree_create"
