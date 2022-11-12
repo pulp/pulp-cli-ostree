@@ -5,15 +5,13 @@ import click
 from pulpcore.cli.common.context import (
     EntityFieldDefinition,
     PluginRequirement,
-    PulpContext,
     PulpEntityContext,
     PulpRemoteContext,
     PulpRepositoryContext,
-    pass_pulp_context,
-    pass_repository_context,
 )
 from pulpcore.cli.common.generic import (
     GroupOption,
+    PulpCLIContext,
     chunk_size_option,
     create_command,
     destroy_command,
@@ -22,6 +20,8 @@ from pulpcore.cli.common.generic import (
     label_select_option,
     list_command,
     name_option,
+    pass_pulp_context,
+    pass_repository_context,
     pulp_option,
     repository_content_command,
     repository_href_option,
@@ -63,7 +63,7 @@ remote_option = resource_option(
 )
 @pass_pulp_context
 @click.pass_context
-def repository(ctx: click.Context, pulp_ctx: PulpContext, repo_type: str) -> None:
+def repository(ctx: click.Context, pulp_ctx: PulpCLIContext, repo_type: str) -> None:
     if repo_type == "ostree":
         ctx.obj = PulpOstreeRepositoryContext(pulp_ctx)
     else:
@@ -91,7 +91,7 @@ repository.add_command(label_command(decorators=nested_lookup_options))
 
 def ref_callback(ctx: click.Context, param: click.Parameter, value: Any) -> Any:
     if value:
-        pulp_ctx = ctx.find_object(PulpContext)
+        pulp_ctx = ctx.find_object(PulpCLIContext)
         assert pulp_ctx is not None
         ctx.obj = PulpOstreeRefContentContext(pulp_ctx, entity=value)
     return value
@@ -99,7 +99,7 @@ def ref_callback(ctx: click.Context, param: click.Parameter, value: Any) -> Any:
 
 def commit_callback(ctx: click.Context, param: click.Parameter, value: str) -> str:
     if value:
-        pulp_ctx = ctx.find_object(PulpContext)
+        pulp_ctx = ctx.find_object(PulpCLIContext)
         assert pulp_ctx is not None
         ctx.obj = PulpOstreeCommitContentContext(pulp_ctx, entity={"checksum": value})
     return value
@@ -107,7 +107,7 @@ def commit_callback(ctx: click.Context, param: click.Parameter, value: str) -> s
 
 def config_callback(ctx: click.Context, param: click.Parameter, value: str) -> str:
     if value:
-        pulp_ctx = ctx.find_object(PulpContext)
+        pulp_ctx = ctx.find_object(PulpCLIContext)
         assert pulp_ctx is not None
         ctx.obj = PulpOstreeConfigContentContext(pulp_ctx, entity={"pulp_href": value})
     return value
@@ -199,7 +199,7 @@ def sync(
 @pass_repository_context
 @pass_pulp_context
 def import_all(
-    pulp_ctx: PulpContext,
+    pulp_ctx: PulpCLIContext,
     repository_ctx: PulpOstreeRepositoryContext,
     file: IO[bytes],
     chunk_size: int,
@@ -236,7 +236,7 @@ def import_all(
 @pass_repository_context
 @pass_pulp_context
 def import_commits(
-    pulp_ctx: PulpContext,
+    pulp_ctx: PulpCLIContext,
     repository_ctx: PulpOstreeRepositoryContext,
     file: IO[bytes],
     chunk_size: int,
