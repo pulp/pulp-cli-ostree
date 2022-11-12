@@ -19,7 +19,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v1
         with:
-          python-version: 3.7
+          python-version: 3.9
       - name: Install python dependencies
         run: |
           pip install pygithub
@@ -41,7 +41,7 @@ jobs:
       - name: Lint code
         run: make lint
   test:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     needs:
       - lint
     strategy:
@@ -53,12 +53,12 @@ jobs:
             from_tag: "latest"
             container_file: "Containerfile.source"
           - python: "3.7"
-            pulp_cli: "0.14.0"
+            pulp_cli: "0.16.0"
             image_tag: "latest"
             from_tag: "latest"
             container_file: "Containerfile"
           - python: "3.6"
-            pulp_cli: "0.13.0"
+            pulp_cli: "0.15.0"
             image_tag: "latest"
             from_tag: "latest"
             container_file: "Containerfile"
