@@ -22,18 +22,15 @@ jobs:
         include:
           - python: "3.9"
             image_tag: "nightly"
-            from_tag: "latest"
-            container_file: "Containerfile.source"
+          - python: "3.8"
+            pulp_cli: "0.17.1"
+            image_tag: "3.22"
           - python: "3.7"
-            pulp_cli: "0.16.0"
-            image_tag: "latest"
-            from_tag: "latest"
-            container_file: "Containerfile"
+            pulp_cli: "0.17.1"
+            image_tag: "3.19"
           - python: "3.6"
             pulp_cli: "0.15.0"
             image_tag: "latest"
-            from_tag: "latest"
-            container_file: "Containerfile"
     steps:
       - uses: actions/checkout@v3
       - name: Set up Python
@@ -43,7 +40,9 @@ jobs:
       - name: Install Test Dependencies
         run: pip install -r test_requirements.txt
       - name: Install pulp-cli from source
-        run: pip install git+https://github.com/pulp/pulp-cli@main
+        run: |
+          pip install "git+https://github.com/pulp/pulp-cli@main#egg=pulp-glue&subdirectory=pulp-glue"
+          pip install "git+https://github.com/pulp/pulp-cli@main#egg=pulp-cli"
         if: ${{ ! matrix.pulp_cli }}
       - name: Install specific pulp-cli version
         run: pip install pulp_cli==${{ matrix.pulp_cli }}
