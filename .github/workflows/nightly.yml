@@ -25,12 +25,18 @@ jobs:
           - python: "3.8"
             pulp_cli: "0.17.1"
             image_tag: "3.22"
+            from_tag: "3.22"
+            container_file: "Containerfile"
           - python: "3.7"
             pulp_cli: "0.17.1"
             image_tag: "3.19"
+            from_tag: "latest"
+            container_file: "Containerfile"
           - python: "3.6"
             pulp_cli: "0.15.0"
             image_tag: "latest"
+            from_tag: "latest"
+            container_file: "Containerfile"
     steps:
       - uses: actions/checkout@v3
       - name: Set up Python
