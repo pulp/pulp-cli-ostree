@@ -20,22 +20,31 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - python: "3.9"
+          - python: "3.11"
             image_tag: "nightly"
-          - python: "3.8"
-            pulp_cli: "0.17.1"
-            image_tag: "3.22"
-            from_tag: "3.22"
+            pulp_api_root: "/relocated/djnd/"
+          - python: "3.6"
+            image_tag: "3.21"
+            from_tag: "latest"
             container_file: "Containerfile"
           - python: "3.7"
-            pulp_cli: "0.17.1"
+            image_tag: "3.20"
+            click_version: "8.0.0"
+            from_tag: "latest"
+            container_file: "Containerfile"
+          - python: "3.8"
             image_tag: "3.19"
             from_tag: "latest"
             container_file: "Containerfile"
-          - python: "3.6"
-            pulp_cli: "0.15.0"
-            image_tag: "latest"
+          - python: "3.9"
+            image_tag: "3.18"
+            pulp_api_root: "/relocated/djnd/"
             from_tag: "latest"
+            container_file: "Containerfile"
+          - python: "3.10"
+            image_tag: "3.22"
+            click_version: "8.0.0"
+            from_tag: "3.22"
             container_file: "Containerfile"
     steps:
       - uses: actions/checkout@v3
@@ -44,20 +53,20 @@ jobs:
         with:
           python-version: ${{ matrix.python }}
       - name: Install Test Dependencies
-        run: pip install -r test_requirements.txt
-      - name: Install pulp-cli from source
         run: |
-          pip install "git+https://github.com/pulp/pulp-cli@main#egg=pulp-glue&subdirectory=pulp-glue"
-          pip install "git+https://github.com/pulp/pulp-cli@main#egg=pulp-cli"
-        if: ${{ ! matrix.pulp_cli }}
-      - name: Install specific pulp-cli version
-        run: pip install pulp_cli==${{ matrix.pulp_cli }}
-        if: ${{ matrix.pulp_cli }}
+          if [ "${{matrix.click_version}}" ]
+          then
+            pip install -r test_requirements.txt click~=${{ matrix.click_version }}
+          else
+            pip install -r test_requirements.txt
+          fi
       - name: Install the ostree utility
         run: sudo apt-get install ostree
       - name: Run tests
         env:
+          CONTAINER_RUNTIME: ${{ matrix.container_runtime }}
           IMAGE_TAG: ${{ matrix.image_tag }}
           FROM_TAG: ${{ matrix.from_tag }}
           CONTAINER_FILE: ${{ matrix.container_file }}
+          PULP_API_ROOT: ${{ matrix.pulp_api_root }}
         run: .ci/run_container.sh make test

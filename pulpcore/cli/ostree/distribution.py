@@ -2,7 +2,8 @@ from gettext import gettext as _
 from typing import Optional, Union, cast
 
 import click
-from pulpcore.cli.common.context import EntityDefinition, PluginRequirement, PulpEntityContext
+from pulp_glue.common.context import EntityDefinition, PluginRequirement, PulpEntityContext
+from pulp_glue.ostree.context import PulpOstreeDistributionContext, PulpOstreeRepositoryContext
 from pulpcore.cli.common.generic import (
     PulpCLIContext,
     base_path_contains_option,
@@ -19,8 +20,6 @@ from pulpcore.cli.common.generic import (
     resource_option,
     show_command,
 )
-
-from pulpcore.cli.ostree.context import PulpOstreeDistributionContext, PulpOstreeRepositoryContext
 
 repository_option = resource_option(
     "--repository",
@@ -97,7 +96,7 @@ def update(
             repository = cast(PulpEntityContext, repository)
             if version is not None:
                 if distribution["repository"]:
-                    if pulp_ctx.has_plugin(PluginRequirement("ostree", min="2.0.0a3.dev")):
+                    if pulp_ctx.has_plugin(PluginRequirement("ostree", min="2.0.0")):
                         body["repository"] = ""
                     else:
                         distribution_ctx.update(href, body={"repository": ""}, non_blocking=True)
@@ -105,7 +104,7 @@ def update(
                 body["repository_version"] = f"{repository.pulp_href}versions/{version}/"
             else:
                 if distribution["repository_version"]:
-                    if pulp_ctx.has_plugin(PluginRequirement("ostree", min="2.0.0a3.dev")):
+                    if pulp_ctx.has_plugin(PluginRequirement("ostree", min="2.0.0")):
                         body["repository_version"] = ""
                     else:
                         distribution_ctx.update(
@@ -115,7 +114,7 @@ def update(
     elif version is not None:
         # keep current repository, change version
         if distribution["repository"]:
-            if pulp_ctx.has_plugin(PluginRequirement("ostree", min="2.0.0a3.dev")):
+            if pulp_ctx.has_plugin(PluginRequirement("ostree", min="2.0.0")):
                 body["repository"] = ""
             else:
                 distribution_ctx.update(href, body={"repository": ""}, non_blocking=True)

@@ -12,6 +12,83 @@ env:
 jobs:
   lint:
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python:
+          - "3.7"
+          - "3.10"
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python }}
+      - name: Install python dependencies
+        run: |
+          pip install -r test_requirements.txt
+      - name: Lint code
+        run: make lint
+  test:
+    runs-on: ubuntu-20.04
+    needs:
+      - lint
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - python: "3.11"
+            image_tag: "nightly"
+            pulp_api_root: "/relocated/djnd/"
+          - python: "3.6"
+            image_tag: "3.21"
+            from_tag: "latest"
+            container_file: "Containerfile"
+          - python: "3.7"
+            image_tag: "3.20"
+            click_version: "8.0.0"
+            from_tag: "latest"
+            container_file: "Containerfile"
+          - python: "3.8"
+            image_tag: "3.19"
+            from_tag: "latest"
+            container_file: "Containerfile"
+          - python: "3.9"
+            image_tag: "3.18"
+            pulp_api_root: "/relocated/djnd/"
+            from_tag: "latest"
+            container_file: "Containerfile"
+          - python: "3.10"
+            image_tag: "3.22"
+            click_version: "8.0.0"
+            from_tag: "3.22"
+            container_file: "Containerfile"
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python }}
+      - name: Install Test Dependencies
+        run: |
+          if [ "${{matrix.click_version}}" ]
+          then
+            pip install -r test_requirements.txt click~=${{ matrix.click_version }}
+          else
+            pip install -r test_requirements.txt
+          fi
+      - name: Install the ostree utility
+        run: sudo apt-get install ostree
+      - name: Run tests
+        env:
+          CONTAINER_RUNTIME: ${{ matrix.container_runtime }}
+          IMAGE_TAG: ${{ matrix.image_tag }}
+          FROM_TAG: ${{ matrix.from_tag }}
+          CONTAINER_FILE: ${{ matrix.container_file }}
+          PULP_API_ROOT: ${{ matrix.pulp_api_root }}
+        run: .ci/run_container.sh make test
+  ready-to-ship:
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
       - run: |
@@ -19,11 +96,10 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
-          python-version: 3.9
+          python-version: "3.10"
       - name: Install python dependencies
         run: |
-          pip install pygithub
-          pip install -r test_requirements.txt
+          pip install toml pygithub
       - name: Check commit message
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -38,54 +114,3 @@ jobs:
             fi
           done
         shell: bash
-      - name: Lint code
-        run: make lint
-  test:
-    runs-on: ubuntu-20.04
-    needs:
-      - lint
-    strategy:
-      fail-fast: false
-      matrix:
-        include:
-          - python: "3.9"
-            image_tag: "nightly"
-          - python: "3.8"
-            pulp_cli: "0.17.1"
-            image_tag: "3.22"
-            from_tag: "3.22"
-            container_file: "Containerfile"
-          - python: "3.7"
-            pulp_cli: "0.17.1"
-            image_tag: "3.19"
-            from_tag: "latest"
-            container_file: "Containerfile"
-          - python: "3.6"
-            pulp_cli: "0.15.0"
-            image_tag: "latest"
-            from_tag: "latest"
-            container_file: "Containerfile"
-    steps:
-      - uses: actions/checkout@v3
-      - name: Set up Python
-        uses: actions/setup-python@v4
-        with:
-          python-version: ${{ matrix.python }}
-      - name: Install Test Dependencies
-        run: pip install -r test_requirements.txt
-      - name: Install pulp-cli from source
-        run: |
-          pip install "git+https://github.com/pulp/pulp-cli@main#egg=pulp-glue&subdirectory=pulp-glue"
-          pip install "git+https://github.com/pulp/pulp-cli@main#egg=pulp-cli"
-        if: ${{ ! matrix.pulp_cli }}
-      - name: Install specific pulp-cli version
-        run: pip install pulp_cli==${{ matrix.pulp_cli }}
-        if: ${{ matrix.pulp_cli }}
-      - name: Install the ostree utility
-        run: sudo apt-get install ostree
-      - name: Run tests
-        env:
-          IMAGE_TAG: ${{ matrix.image_tag }}
-          FROM_TAG: ${{ matrix.from_tag }}
-          CONTAINER_FILE: ${{ matrix.container_file }}
-        run: .ci/run_container.sh make test

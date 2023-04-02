@@ -1,18 +1,22 @@
-from pulpcore.cli.common import main
-from pulpcore.cli.common.context import PluginRequirement
-from pulpcore.cli.common.generic import PulpCLIContext, pass_pulp_context
+from typing import Any
+
+import click
+from pulpcore.cli.common.generic import pulp_group
 
 from pulpcore.cli.ostree.distribution import distribution
 from pulpcore.cli.ostree.remote import remote
 from pulpcore.cli.ostree.repository import repository
 
-
-@main.group()
-@pass_pulp_context
-def ostree(pulp_ctx: PulpCLIContext) -> None:
-    pulp_ctx.needs_plugin(PluginRequirement("ostree"))
+__version__ = "0.1.0.dev"
 
 
-ostree.add_command(distribution)
-ostree.add_command(remote)
-ostree.add_command(repository)
+@pulp_group("ostree")
+def ostree_group() -> None:
+    pass
+
+
+def mount(main: click.Group, **kwargs: Any) -> None:
+    ostree_group.add_command(distribution)
+    ostree_group.add_command(remote)
+    ostree_group.add_command(repository)
+    main.add_command(ostree_group)
