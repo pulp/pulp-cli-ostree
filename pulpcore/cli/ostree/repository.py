@@ -2,12 +2,19 @@ from gettext import gettext as _
 from typing import IO, Any, Dict, Optional
 
 import click
-from pulpcore.cli.common.context import (
+from pulp_glue.common.context import (
     EntityFieldDefinition,
     PluginRequirement,
     PulpEntityContext,
     PulpRemoteContext,
     PulpRepositoryContext,
+)
+from pulp_glue.ostree.context import (
+    PulpOstreeCommitContentContext,
+    PulpOstreeConfigContentContext,
+    PulpOstreeRefContentContext,
+    PulpOstreeRemoteContext,
+    PulpOstreeRepositoryContext,
 )
 from pulpcore.cli.common.generic import (
     GroupOption,
@@ -34,14 +41,6 @@ from pulpcore.cli.common.generic import (
 )
 from pulpcore.cli.core.context import PulpArtifactContext
 from pulpcore.cli.core.generic import task_command
-
-from pulpcore.cli.ostree.context import (
-    PulpOstreeCommitContentContext,
-    PulpOstreeConfigContentContext,
-    PulpOstreeRefContentContext,
-    PulpOstreeRemoteContext,
-    PulpOstreeRepositoryContext,
-)
 
 remote_option = resource_option(
     "--remote",
@@ -231,7 +230,6 @@ def import_all(
     type=str,
     required=False,
     help=_("Name of a parent commit"),
-    needs_plugins=[PluginRequirement("ostree", max="2.0.0a3.dev")],
 )
 @pass_repository_context
 @pass_pulp_context
@@ -254,7 +252,7 @@ def import_commits(
         "ref": ref,
     }
 
-    if pulp_ctx.has_plugin(PluginRequirement("ostree", max="2.0.0a3.dev")):
+    if pulp_ctx.has_plugin(PluginRequirement("ostree", max="2.0.0")):
         if not all((ref, parent_commit)) and any((ref, parent_commit)):
             raise click.ClickException(
                 "Please specify both the ref and parent_commit if you want to add new child "

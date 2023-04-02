@@ -15,7 +15,7 @@ tar --exclude="index.html" -cvf "fixtures_small_repo.tar" -C "$OSTREE_DOWNLOADED
 
 expect_succ pulp ostree repository create --name "cli_test_ostree_repository"
 
-if pulp debug has-plugin --name "ostree" --min-version "2.0.0a6.dev"
+if pulp debug has-plugin --name "ostree" --min-version "2.0.0"
 then
   expect_succ pulp ostree repository import-all --name "cli_test_ostree_repository" \
     --file "fixtures_small_repo.tar" \
@@ -39,7 +39,7 @@ ostree --repo=small init --mode=archive
 ostree --repo=small commit --branch "stable" tree/ --parent="$LATEST_COMMIT"
 tar -cvf "fixtures_small_repo_new_commit.tar" "small"
 
-if pulp debug has-plugin --name "ostree" --min-version "2.0.0a3.dev"
+if pulp debug has-plugin --name "ostree" --min-version "2.0.0"
 then
   expect_succ pulp ostree repository import-commits --name "cli_test_ostree_repository" \
     --file "fixtures_small_repo_new_commit.tar" \

@@ -21,7 +21,7 @@ CHANGELOG_EXTS = [
 ]
 
 sha = sys.argv[1]
-project = "pulp-cli"
+project = "pulp-cli-ostree"
 message = subprocess.check_output(["git", "log", "--format=%B", "-n 1", sha]).decode("utf-8")
 
 if any((re.match(pattern, message) for pattern in BLOCKING_REGEX)):

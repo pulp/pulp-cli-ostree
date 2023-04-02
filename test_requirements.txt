@@ -1,15 +1,11 @@
--e .
-black~=22.3
-flake8
-isort
-mypy
+.
+./pulp-glue-ostree
+
+# Test requirements
 pygments
 pytest
+pytest-subtests
 python-gnupg
-shellcheck-py
 
-types-pygments
-types-PyYAML
-types-requests
-types-setuptools
-types-toml
+# Lint requirements
+-r lint_requirements.txt

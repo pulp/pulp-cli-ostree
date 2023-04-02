@@ -2,6 +2,7 @@ import json
 from typing import Any
 
 import click
+from pulp_glue.ostree.context import PulpOstreeRemoteContext
 from pulpcore.cli.common.generic import (
     PulpCLIContext,
     common_remote_create_options,
@@ -17,8 +18,6 @@ from pulpcore.cli.common.generic import (
     show_command,
     update_command,
 )
-
-from pulpcore.cli.ostree.context import PulpOstreeRemoteContext
 
 
 @click.group()
