@@ -10,6 +10,18 @@
 
 [//]: # (towncrier release notes start)
 
+## 0.1.0 (2023-04-03)
+=====================
+
+
+### Features
+
+- Ported pulp-cli-ostree to pulp-glue.
+  [#38](https://github.com/pulp/pulp-cli-ostree/issues/38)
+
+
+---
+
 
 ## 0.0.3 (2022-06-24)
 
