@@ -37,13 +37,13 @@ if pulp debug has-plugin --name "ostree" --min-version "2.0.0"
 then
   BASE_PATH=$(pulp ostree distribution show --name "cli_test_ostree_distro" | jq -r ".base_url")
 
-  RESPONSE_CODE=$(curl -I "${BASE_PATH}"refs/heads/rawhide | head -n 1| cut -d' ' -f2)
+  RESPONSE_CODE=$(curl -s -o /dev/null -w "%{http_code}" -L "${BASE_PATH}"refs/heads/rawhide)
   if [ "$RESPONSE_CODE" != "200" ]
   then
     echo "The 'rawhide' ref could not be found" && exit 1
   fi
 
-  RESPONSE_CODE=$(curl -I "${BASE_PATH}"refs/heads/stable | head -n 1| cut -d' ' -f2)
+  RESPONSE_CODE=$(curl -s -o /dev/null -w "%{http_code}" -L "${BASE_PATH}"refs/heads/stable)
   if [ "$RESPONSE_CODE" != "404" ]
   then
     echo "The 'stable' ref should not be synced" && exit 1
