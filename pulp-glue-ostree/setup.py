@@ -25,7 +25,7 @@ setup(
     long_description_content_type="text/markdown",
     author="Pulp Team",
     url="https://github.com/pulp/pulp-cli-ostree",
-    version="0.1.1.dev",
+    version="0.1.1",
     packages=plugin_packages,
     package_data={"": ["py.typed"]},
     python_requires=">=3.6",
