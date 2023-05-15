@@ -7,7 +7,7 @@ from pulpcore.cli.ostree.distribution import distribution
 from pulpcore.cli.ostree.remote import remote
 from pulpcore.cli.ostree.repository import repository
 
-__version__ = "0.1.0"
+__version__ = "0.1.1.dev"
 
 
 @pulp_group("ostree")
