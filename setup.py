@@ -21,11 +21,11 @@ setup(
     description="Command line interface to talk to pulpcore's REST API. (OSTree plugin commands)",
     author="Pulp Team",
     url="https://github.com/pulp/pulp-cli-ostree",
-    version="0.1.1.dev",
+    version="0.1.1",
     packages=plugin_packages,
     package_data={package: ["py.typed"] for package in plugin_packages},
     python_requires=">=3.6",
-    install_requires=["pulp-cli>=0.18.0", "pulp-glue-ostree==0.1.1.dev"],
+    install_requires=["pulp-cli>=0.18.0", "pulp-glue-ostree==0.1.1"],
     entry_points={
         "pulp_cli.plugins": [f"{name}={module}" for name, module in plugin_entry_points],
     },
