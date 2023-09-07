@@ -1,6 +1,16 @@
 # Lint requirements
-black~=23.7 ; python_version > "3.7"
-flake8 ; python_version > "3.6"
-isort ; python_version > "3.6"
-mypy ; python_version > "3.6"
-shellcheck-py ; python_version > "3.6"
+black==23.7.0
+flake8==6.1.0
+isort==5.12.0
+mypy==1.5.1
+shellcheck-py==0.9.0.5
+
+# Type annotation stubs
+types-pygments
+types-PyYAML
+types-requests
+types-setuptools
+types-toml
+
+# Install the actual bits for mypy
+-r test_requirements.txt

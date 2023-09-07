@@ -57,7 +57,7 @@ remote_option = resource_option(
     "-t",
     "--type",
     "repo_type",
-    type=click.Choice(["ostree", "push"], case_sensitive=False),
+    type=click.Choice(["ostree"], case_sensitive=False),
     default="ostree",
 )
 @pass_pulp_context
@@ -199,11 +199,13 @@ def sync(
 @pass_pulp_context
 def import_all(
     pulp_ctx: PulpCLIContext,
-    repository_ctx: PulpOstreeRepositoryContext,
+    repository_ctx: PulpRepositoryContext,
     file: IO[bytes],
     chunk_size: int,
     repository_name: str,
 ) -> None:
+    assert isinstance(repository_ctx, PulpOstreeRepositoryContext)
+
     repository_href = repository_ctx.pulp_href
     artifact_href = PulpArtifactContext(pulp_ctx).upload(file, chunk_size)
     kwargs = {
@@ -235,13 +237,15 @@ def import_all(
 @pass_pulp_context
 def import_commits(
     pulp_ctx: PulpCLIContext,
-    repository_ctx: PulpOstreeRepositoryContext,
+    repository_ctx: PulpRepositoryContext,
     file: IO[bytes],
     chunk_size: int,
     repository_name: str,
     ref: Optional[str],
     parent_commit: Optional[str],
 ) -> None:
+    assert isinstance(repository_ctx, PulpOstreeRepositoryContext)
+
     repository_href = repository_ctx.pulp_href
     artifact_href = PulpArtifactContext(pulp_ctx).upload(file, chunk_size)
 

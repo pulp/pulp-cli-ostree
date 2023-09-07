@@ -74,11 +74,13 @@ distribution.add_command(label_command())
 @pass_pulp_context
 def update(
     pulp_ctx: PulpCLIContext,
-    distribution_ctx: PulpOstreeDistributionContext,
+    distribution_ctx: PulpEntityContext,
     base_path: Optional[str],
     repository: Optional[Union[str, PulpEntityContext]],
     version: Optional[int],
 ) -> None:
+    assert isinstance(distribution_ctx, PulpOstreeDistributionContext)
+
     distribution: EntityDefinition = distribution_ctx.entity
     href: str = distribution_ctx.pulp_href
     body: EntityDefinition = {}

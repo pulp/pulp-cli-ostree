@@ -25,7 +25,7 @@ setup(
     packages=plugin_packages,
     package_data={package: ["py.typed"] for package in plugin_packages},
     python_requires=">=3.6",
-    install_requires=["pulp-cli>=0.18.0", "pulp-glue-ostree==0.2.0.dev"],
+    install_requires=["pulp-cli>=0.18.2,<0.22", "pulp-glue-ostree==0.2.0.dev"],
     entry_points={
         "pulp_cli.plugins": [f"{name}={module}" for name, module in plugin_entry_points],
     },
