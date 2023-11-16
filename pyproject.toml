@@ -1,5 +1,4 @@
 [tool.towncrier]
-package = "pulpcore.cli.ostree"
 filename = "CHANGES.md"
 directory = "CHANGES/"
 title_format = "## {version} ({project_date})"
