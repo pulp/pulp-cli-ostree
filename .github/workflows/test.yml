@@ -21,9 +21,9 @@ jobs:
             pulp_api_root: "/relocated/djnd/"
           - python: "3.6"
             image_tag: "3.28"
+            lower_bounds: true
           - python: "3.7"
             image_tag: "3.26"
-            lower_bounds: true
           - python: "3.8"
             image_tag: "3.25"
           - python: "3.9"
@@ -31,9 +31,9 @@ jobs:
             pulp_api_root: "/relocated/djnd/"
           - python: "3.10"
             image_tag: "3.35"
-            lower_bounds: true
           - python: "3.11"
             image_tag: "latest"
+            lower_bounds: true
     steps:
       - uses: actions/checkout@v4
       - uses: actions/cache@v3
@@ -50,6 +50,9 @@ jobs:
         run: |
           if [ "${{matrix.lower_bounds}}" ]
           then
+            # https://github.com/yaml/pyyaml/issues/601#issuecomment-1834630109
+            pip install "cython<3.0.0" wheel
+            pip install "pyyaml==5.4.1" --no-build-isolation
             pip install -r test_requirements.txt -c lower_bounds_constraints.lock
           else
             pip install -r test_requirements.txt
