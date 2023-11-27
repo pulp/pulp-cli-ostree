@@ -55,7 +55,7 @@ jobs:
             pip install -r test_requirements.txt
           fi
       - name: Install the ostree utility
-        run: sudo apt-get install ostree
+        run: sudo apt update && sudo apt-get install -y ostree
       - name: Run tests
         env:
           CONTAINER_RUNTIME: ${{ matrix.container_runtime }}
