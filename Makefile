@@ -1,8 +1,16 @@
-PLUGINS=$(notdir $(wildcard pulpcore/cli/*))
+
+GLUE_PLUGINS=$(notdir $(wildcard pulp-glue-ostree/pulp_glue/*))
+CLI_PLUGINS=$(notdir $(wildcard pulpcore/cli/*))
 
 info:
+	@echo Pulp glue
+	@echo plugins: $(GLUE_PLUGINS)
 	@echo Pulp CLI
-	@echo plugins: $(PLUGINS)
+	@echo plugins: $(CLI_PLUGINS)
+
+build:
+	cd pulp-glue-ostree; pyproject-build -n
+	pyproject-build -n
 
 black:
 	isort .
@@ -10,13 +18,13 @@ black:
 	black .
 
 lint:
-	find . -name '*.sh' -print0 | xargs -0 shellcheck -x
+	find tests .ci -name '*.sh' -print0 | xargs -0 shellcheck -x
 	isort -c --diff .
 	cd pulp-glue-ostree; isort -c --diff .
 	black --diff --check .
 	flake8
 	.ci/scripts/check_click_for_mypy.py
-	mypy
+	MYPYPATH=pulp-glue-ostree mypy
 	cd pulp-glue-ostree; mypy
 	@echo "🙊 Code 🙈 LGTM 🙉 !"
 
@@ -26,8 +34,4 @@ tests/cli.toml:
 
 test: | tests/cli.toml
 	pytest -v tests
-
-site:
-	mkdocs build
-
-.PHONY: info black lint test
+.PHONY: build info black lint test

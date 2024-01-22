@@ -23,6 +23,6 @@ git branch "${NEW_BRANCH}"
 # Clean changelog snippets.
 find CHANGES/ \( -name "*.feature" -o -name "*.bugfix" -o -name "*.doc" -o -name "*.translation" -o -name "*.devel" -o -name "*.misc" \) -exec git rm -f \{\} +
 
-bumpversion minor --commit --message $'Bump version to {new_version}\n\n[noissue]' --allow-dirty
+bump2version minor --commit --message $'Bump version to {new_version}\n\n[noissue]' --allow-dirty
 
 git push origin "${NEW_BRANCH}"
