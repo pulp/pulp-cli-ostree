@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "pulp-cli-ostree"
-version = "0.3.0"
+version = "0.3.1.dev"
 description = "Command line interface to talk to pulpcore's REST API. (OSTree plugin commands)"
 readme = "README.md"
 requires-python = ">=3.8"
@@ -24,7 +24,7 @@ classifiers=[
 ]
 dependencies = [
   "pulp-cli>=0.20.0,<0.25",
-  "pulp-glue-ostree==0.3.0",
+  "pulp-glue-ostree==0.3.1.dev",
 ]
 
 [project.urls]
