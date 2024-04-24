@@ -1,4 +1,3 @@
-from gettext import gettext as _
 from typing import IO, Any, Dict, Optional
 
 import click
@@ -9,6 +8,8 @@ from pulp_glue.common.context import (
     PulpRemoteContext,
     PulpRepositoryContext,
 )
+from pulp_glue.common.i18n import get_translation
+from pulp_glue.core.context import PulpArtifactContext
 from pulp_glue.ostree.context import (
     PulpOstreeCommitContentContext,
     PulpOstreeConfigContentContext,
@@ -32,15 +33,17 @@ from pulpcore.cli.common.generic import (
     pulp_option,
     repository_content_command,
     repository_href_option,
-    repository_option,
+    repository_lookup_option,
     resource_option,
     retained_versions_option,
     show_command,
     update_command,
     version_command,
 )
-from pulpcore.cli.core.context import PulpArtifactContext
 from pulpcore.cli.core.generic import task_command
+
+translation = get_translation(__package__)
+_ = translation.gettext
 
 remote_option = resource_option(
     "--remote",
@@ -70,7 +73,7 @@ def repository(ctx: click.Context, pulp_ctx: PulpCLIContext, repo_type: str) -> 
 
 
 lookup_options = [href_option, name_option]
-nested_lookup_options = [repository_href_option, repository_option]
+nested_lookup_options = [repository_href_option, repository_lookup_option]
 update_options = [
     click.option("--description"),
     remote_option,
@@ -168,7 +171,6 @@ def sync(
         raise click.ClickException(_("Repository type does not support sync."))
 
     repository = repository_ctx.entity
-    repository_href = repository_ctx.pulp_href
 
     body: Dict[str, Any] = {}
 
@@ -182,7 +184,7 @@ def sync(
             ).format(name=repository["name"])
         )
 
-    repository_ctx.sync(href=repository_href, body=body)
+    repository_ctx.sync(body=body)
 
 
 @repository.command(help=_("Import all refs and commits from a tarball"))
@@ -256,7 +258,7 @@ def import_commits(
         "ref": ref,
     }
 
-    if pulp_ctx.has_plugin(PluginRequirement("ostree", max="2.0.0")):
+    if pulp_ctx.has_plugin(PluginRequirement("ostree", specifier="<2.0.0")):
         if not all((ref, parent_commit)) and any((ref, parent_commit)):
             raise click.ClickException(
                 "Please specify both the ref and parent_commit if you want to add new child "

@@ -11,7 +11,7 @@ cleanup() {
 }
 trap cleanup EXIT
 
-if pulp debug has-plugin --name "ostree" --min-version "2.0.0"
+if pulp debug has-plugin --name "ostree" --specifier ">=2.0.0"
 then
   expect_succ pulp ostree remote create --name "cli_test_ostree_remote" \
     --url "$OSTREE_REMOTE_URL" \
@@ -33,7 +33,7 @@ expect_succ pulp ostree distribution create --name "cli_test_ostree_distro" \
   --base-path "cli_test_ostree_distro" \
   --repository "cli_test_ostree_repository"
 
-if pulp debug has-plugin --name "ostree" --min-version "2.0.0"
+if pulp debug has-plugin --name "ostree" --specifier ">=2.0.0"
 then
   BASE_PATH=$(pulp ostree distribution show --name "cli_test_ostree_distro" | jq -r ".base_url")
 

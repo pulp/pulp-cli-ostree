@@ -2,6 +2,7 @@ import json
 from typing import Any
 
 import click
+from pulp_glue.common.i18n import get_translation
 from pulp_glue.ostree.context import PulpOstreeRemoteContext
 from pulpcore.cli.common.generic import (
     PulpCLIContext,
@@ -18,6 +19,9 @@ from pulpcore.cli.common.generic import (
     show_command,
     update_command,
 )
+
+translation = get_translation(__package__)
+_ = translation.gettext
 
 
 @click.group()

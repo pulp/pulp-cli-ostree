@@ -1,8 +1,8 @@
-from gettext import gettext as _
 from typing import Optional, Union, cast
 
 import click
 from pulp_glue.common.context import EntityDefinition, PluginRequirement, PulpEntityContext
+from pulp_glue.common.i18n import get_translation
 from pulp_glue.ostree.context import PulpOstreeDistributionContext, PulpOstreeRepositoryContext
 from pulpcore.cli.common.generic import (
     PulpCLIContext,
@@ -20,6 +20,10 @@ from pulpcore.cli.common.generic import (
     resource_option,
     show_command,
 )
+
+translation = get_translation(__package__)
+_ = translation.gettext
+
 
 repository_option = resource_option(
     "--repository",
@@ -82,7 +86,6 @@ def update(
     assert isinstance(distribution_ctx, PulpOstreeDistributionContext)
 
     distribution: EntityDefinition = distribution_ctx.entity
-    href: str = distribution_ctx.pulp_href
     body: EntityDefinition = {}
 
     if base_path is not None:
@@ -98,28 +101,26 @@ def update(
             repository = cast(PulpEntityContext, repository)
             if version is not None:
                 if distribution["repository"]:
-                    if pulp_ctx.has_plugin(PluginRequirement("ostree", min="2.0.0")):
+                    if pulp_ctx.has_plugin(PluginRequirement("ostree", specifier=">=2.0.0")):
                         body["repository"] = ""
                     else:
-                        distribution_ctx.update(href, body={"repository": ""}, non_blocking=True)
+                        distribution_ctx.update(body={"repository": ""}, non_blocking=True)
 
                 body["repository_version"] = f"{repository.pulp_href}versions/{version}/"
             else:
                 if distribution["repository_version"]:
-                    if pulp_ctx.has_plugin(PluginRequirement("ostree", min="2.0.0")):
+                    if pulp_ctx.has_plugin(PluginRequirement("ostree", specifier=">=2.0.0")):
                         body["repository_version"] = ""
                     else:
-                        distribution_ctx.update(
-                            href, body={"repository_version": ""}, non_blocking=True
-                        )
+                        distribution_ctx.update(body={"repository_version": ""}, non_blocking=True)
                 body["repository"] = repository.pulp_href
     elif version is not None:
         # keep current repository, change version
         if distribution["repository"]:
-            if pulp_ctx.has_plugin(PluginRequirement("ostree", min="2.0.0")):
+            if pulp_ctx.has_plugin(PluginRequirement("ostree", specifier=">=2.0.0")):
                 body["repository"] = ""
             else:
-                distribution_ctx.update(href, body={"repository": ""}, non_blocking=True)
+                distribution_ctx.update(body={"repository": ""}, non_blocking=True)
 
             body["repository_version"] = f'{distribution["repository"]}versions/{version}/'
         elif distribution["repository_version"]:
@@ -132,4 +133,4 @@ def update(
                     "please specify the repository to use  with --repository"
                 ).format(distribution=distribution["name"])
             )
-    distribution_ctx.update(href, body=body)
+    distribution_ctx.update(body=body)
