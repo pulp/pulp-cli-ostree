@@ -1,11 +1,15 @@
 from typing import Any
 
 import click
+from pulp_glue.common.i18n import get_translation
 from pulpcore.cli.common.generic import pulp_group
 
 from pulpcore.cli.ostree.distribution import distribution
 from pulpcore.cli.ostree.remote import remote
 from pulpcore.cli.ostree.repository import repository
+
+translation = get_translation(__package__)
+_ = translation.gettext
 
 __version__ = "0.4.0.dev"
 

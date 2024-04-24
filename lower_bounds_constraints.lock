@@ -1,3 +1,3 @@
-pulp-cli==0.20.0
-pulp-glue==0.20.0
+pulp-cli==0.23.1
+pulp-glue==0.23.1
 click==8.0.0

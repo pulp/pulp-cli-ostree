@@ -9,43 +9,50 @@ from pulp_glue.common.context import (
     PulpRemoteContext,
     PulpRepositoryContext,
     PulpRepositoryVersionContext,
-    registered_repository_contexts,
 )
 
 
 class PulpOstreeCommitContentContext(PulpContentContext):
+    PLUGIN = "ostree"
+    RESOURCE_TYPE = "commit"
     ENTITY = _("commit content")
     ENTITIES = _("commit content")
     HREF = "ostree_ostree_commit_href"
     ID_PREFIX = "content_ostree_commits"
-    NEEDS_PLUGINS = [PluginRequirement("ostree", min="2.0.0")]
+    NEEDS_PLUGINS = [PluginRequirement("ostree", specifier=">=2.0.0")]
 
 
 class PulpOstreeRefContentContext(PulpContentContext):
+    PLUGIN = "ostree"
+    RESOURCE_TYPE = "ref"
     ENTITY = _("ref content")
     ENTITIES = _("ref content")
     HREF = "ostree_ostree_ref_href"
     ID_PREFIX = "content_ostree_refs"
-    NEEDS_PLUGINS = [PluginRequirement("ostree", min="2.0.0")]
+    NEEDS_PLUGINS = [PluginRequirement("ostree", specifier=">=2.0.0")]
 
 
 class PulpOstreeConfigContentContext(PulpContentContext):
+    PLUGIN = "ostree"
+    RESOURCE_TYPE = "config"
     ENTITY = _("config content")
     ENTITIES = _("config content")
     HREF = "ostree_ostree_config_href"
     ID_PREFIX = "content_ostree_configs"
-    NEEDS_PLUGINS = [PluginRequirement("ostree", min="2.0.0")]
+    NEEDS_PLUGINS = [PluginRequirement("ostree", specifier=">=2.0.0")]
 
 
 class PulpOstreeDistributionContext(PulpEntityContext):
+    PLUGIN = "ostree"
+    RESOURCE_TYPE = "ostree"
     ENTITY = _("ostree distribution")
     ENTITIES = _("ostree distributions")
     HREF = "ostree_ostree_distribution_href"
     ID_PREFIX = "distributions_ostree_ostree"
-    NEEDS_PLUGINS = [PluginRequirement("ostree", min="2.0.0")]
+    NEEDS_PLUGINS = [PluginRequirement("ostree", specifier=">=2.0.0")]
 
-    def preprocess_body(self, body: EntityDefinition) -> EntityDefinition:
-        body = super().preprocess_body(body)
+    def preprocess_entity(self, body: EntityDefinition, partial: bool = False) -> EntityDefinition:
+        body = super().preprocess_entity(body, partial)
         version = body.pop("version", None)
         if version is not None:
             repository_href = body.pop("repository")
@@ -54,29 +61,35 @@ class PulpOstreeDistributionContext(PulpEntityContext):
 
 
 class PulpOstreeRemoteContext(PulpRemoteContext):
+    PLUGIN = "ostree"
+    RESOURCE_TYPE = "ostree"
     ENTITY = _("ostree remote")
     ENTITIES = _("ostree remotes")
     HREF = "ostree_ostree_remote_href"
     ID_PREFIX = "remotes_ostree_ostree"
-    NEEDS_PLUGINS = [PluginRequirement("ostree", min="2.0.0")]
+    NEEDS_PLUGINS = [PluginRequirement("ostree", specifier=">=2.0.0")]
 
 
 class PulpOstreeRepositoryVersionContext(PulpRepositoryVersionContext):
+    PLUGIN = "ostree"
+    RESOURCE_TYPE = "ostree"
     HREF = "ostree_ostree_repository_version_href"
     ID_PREFIX = "repositories_ostree_ostree_versions"
-    NEEDS_PLUGINS = [PluginRequirement("ostree", min="2.0.0")]
+    NEEDS_PLUGINS = [PluginRequirement("ostree", specifier=">=2.0.0")]
 
 
 class PulpOstreeRepositoryContext(PulpRepositoryContext):
+    PLUGIN = "ostree"
+    RESOURCE_TYPE = "ostree"
     HREF = "ostree_ostree_repository_href"
     ID_PREFIX = "repositories_ostree_ostree"
     IMPORT_ALL_ID: ClassVar[str] = "repositories_ostree_ostree_import_all"
     IMPORT_COMMITS_ID: ClassVar[str] = "repositories_ostree_ostree_import_commits"
     VERSION_CONTEXT = PulpOstreeRepositoryVersionContext
-    NEEDS_PLUGINS = [PluginRequirement("ostree", min="2.0.0")]
+    NEEDS_PLUGINS = [PluginRequirement("ostree", specifier=">=2.0.0")]
     CAPABILITIES = {
         "sync": [PluginRequirement("ostree")],
-        "import_all": [PluginRequirement("ostree", min="2.0.0")],
+        "import_all": [PluginRequirement("ostree", specifier=">=2.0.0")],
         "import_commits": [PluginRequirement("ostree")],
     }
 
@@ -110,6 +123,3 @@ class PulpOstreeRepositoryContext(PulpRepositoryContext):
             parameters={self.HREF: href},
             body=body,
         )
-
-
-registered_repository_contexts["ostree:ostree"] = PulpOstreeRepositoryContext

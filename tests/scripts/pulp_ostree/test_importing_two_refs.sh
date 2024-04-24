@@ -11,7 +11,7 @@ cleanup() {
 trap cleanup EXIT
 
 # workflow fixed in 2.2, https://github.com/pulp/pulp_ostree/issues/277
-if pulp debug has-plugin --name "ostree" --min-version "2.2.0"
+if pulp debug has-plugin --name "ostree" --specifier ">=2.2.0"
 then
   workdir=$(mktemp -d)
   cd "${workdir}"
