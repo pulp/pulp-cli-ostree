@@ -43,30 +43,13 @@ namespaces = true
 "*" = ["py.typed", "locale/*/LC_MESSAGES/*.mo"]
 
 [tool.pulp_cli_template]
+# This section is co-managed by the cookiecutter templates.
+# Changes to existing keys should be preserved.
 app_label = "ostree"
 glue = true
 docs = false
 translations = false
-test_matrix = """
-- python: "3.11"
-  image_tag: "nightly"
-  pulp_api_root: "/relocated/djnd/"
-- python: "3.8"
-  image_tag: "3.28"
-  lower_bounds: true
-- python: "3.12"
-  image_tag: "3.26"
-- python: "3.8"
-  image_tag: "3.25"
-- python: "3.9"
-  image_tag: "3.24"
-  pulp_api_root: "/relocated/djnd/"
-- python: "3.10"
-  image_tag: "3.35"
-- python: "3.11"
-  image_tag: "latest"
-  lower_bounds: true
-"""
+main_package = "ostree"
 
 [tool.towncrier]
 filename = "CHANGES.md"
@@ -147,3 +130,46 @@ module = [
   "schema.*",
 ]
 ignore_missing_imports = true
+
+[tool.bumpversion]
+# This section is managed by the cookiecutter templates.
+current_version = "0.4.0.dev"
+commit = false
+tag = false
+parse = "(?P<major>\\d+)\\.(?P<minor>\\d+)\\.(?P<patch>\\d+)(\\.(?P<release>[a-z]+))?"
+serialize = [
+  "{major}.{minor}.{patch}.{release}",
+  "{major}.{minor}.{patch}",
+]
+
+[tool.bumpversion.parts.release]
+optional_value = "prod"
+values = [
+  "dev",
+  "prod",
+]
+
+[[tool.bumpversion.files]]
+filename = "./pulp-glue-ostree/pulp_glue/ostree/__init__.py"
+search = "__version__ = \"{current_version}\""
+replace = "__version__ = \"{new_version}\""
+
+[[tool.bumpversion.files]]
+filename = "./pulpcore/cli/ostree/__init__.py"
+search = "__version__ = \"{current_version}\""
+replace = "__version__ = \"{new_version}\""
+
+[[tool.bumpversion.files]]
+filename = "./pulp-glue-ostree/pyproject.toml"
+search = "version = \"{current_version}\""
+replace = "version = \"{new_version}\""
+
+[[tool.bumpversion.files]]
+filename = "./pyproject.toml"
+search = "version = \"{current_version}\""
+replace = "version = \"{new_version}\""
+
+[[tool.bumpversion.files]]
+filename = "./pyproject.toml"
+search = "\"pulp-glue-ostree=={current_version}\""
+replace = "\"pulp-glue-ostree=={new_version}\""
