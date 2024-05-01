@@ -10,6 +10,23 @@
 
 [//]: # (towncrier release notes start)
 
+## 0.4.0 (2024-04-30)
+
+
+#### Features {: #0.4.0-feature }
+
+- Bumped the main pulp-cli dependency to `pulp-cli>=0.23.1,<0.26`.
+
+
+### Pulp GLUE ostree {: #0.4.0-pulp-glue-ostree }
+
+
+#### Features {: #0.4.0-pulp-glue-ostree-feature }
+
+- Bumped the pulp-glue dependency to support `pulp-glue>=0.23.1,<0.26`.
+
+---
+
 ## 0.3.0 (2024-04-23)
 
 
