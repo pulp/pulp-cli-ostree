@@ -35,80 +35,87 @@ changelog = "https://github.com/pulp/pulp-cli-ostree/blob/main/CHANGES.md"
 ostree = "pulpcore.cli.ostree"
 
 [tool.setuptools.packages.find]
+# This section is managed by the cookiecutter templates.
 where = ["."]
 include = ["pulpcore.cli.*"]
 namespaces = true
 
 [tool.setuptools.package-data]
-"*" = ["py.typed", "locale/*/LC_MESSAGES/*.mo"]
+# This section is managed by the cookiecutter templates.
+"*" = ["py.typed"]
+
 
 [tool.pulp_cli_template]
 # This section is co-managed by the cookiecutter templates.
 # Changes to existing keys should be preserved.
 app_label = "ostree"
+repository = "https://github.com/pulp/pulp-cli-ostree"
 glue = true
 docs = false
 translations = false
 main_package = "ostree"
+binary_dependencies = ""
 
 [tool.towncrier]
+# This section is managed by the cookiecutter templates.
 filename = "CHANGES.md"
 directory = "CHANGES/"
-title_format = "## {version} ({project_date})"
+title_format = "## {version} ({project_date}) {{: #{version} }}"
 template = "CHANGES/.TEMPLATE.md"
 issue_format = "[#{issue}](https://github.com/pulp/pulp-cli-ostree/issues/{issue})"
 start_string = "[//]: # (towncrier release notes start)\n"
 underlines = ["", "", ""]
 
 [[tool.towncrier.section]]
+# This section is managed by the cookiecutter templates.
 path = ""
 name = ""
 
 [[tool.towncrier.section]]
+# This section is managed by the cookiecutter templates.
 path = "pulp-glue-ostree"
-name = "Pulp GLUE ostree"
+name = "Pulp-ostree GLUE"
 
 [[tool.towncrier.type]]
+# This section is managed by the cookiecutter templates.
 directory = "feature"
 name = "Features"
 showcontent = true
 
 [[tool.towncrier.type]]
+# This section is managed by the cookiecutter templates.
 directory = "bugfix"
 name = "Bugfixes"
 showcontent = true
 
 [[tool.towncrier.type]]
-directory = "doc"
-name = "Improved Documentation"
-showcontent = true
-
-[[tool.towncrier.type]]
+# This section is managed by the cookiecutter templates.
 directory = "removal"
 name = "Deprecations and Removals"
 showcontent = true
 
 [[tool.towncrier.type]]
-directory = "translation"
-name = "Translations"
-showcontent = true
-
-[[tool.towncrier.type]]
+# This section is managed by the cookiecutter templates.
 directory = "devel"
 name = "Developer Notes"
 showcontent = true
 
 [[tool.towncrier.type]]
+# This section is managed by the cookiecutter templates.
 directory = "misc"
 name = "Misc"
 showcontent = false
 
+
 [tool.black]
+# This section is managed by the cookiecutter templates.
 line-length = 100
 
 [tool.isort]
+# This section is managed by the cookiecutter templates.
 profile = "black"
 line_length = 100
+skip = ["pulp-glue-ostree"]
 
 [tool.pytest.ini_options]
 markers = [
@@ -118,15 +125,20 @@ markers = [
 ]
 
 [tool.mypy]
+# This section is managed by the cookiecutter templates.
 strict = true
+warn_unused_ignores = false
 show_error_codes = true
-files = "pulpcore/**/*.py"
+files = "pulpcore/**/*.py, tests/*.py"
 namespace_packages = true
 explicit_package_bases = true
 
 [[tool.mypy.overrides]]
+# This section is managed by the cookiecutter templates.
 module = [
   "click_shell.*",
+  "gnupg.*",
+  "IPython.*",
   "schema.*",
 ]
 ignore_missing_imports = true
@@ -143,6 +155,7 @@ serialize = [
 ]
 
 [tool.bumpversion.parts.release]
+# This section is managed by the cookiecutter templates.
 optional_value = "prod"
 values = [
   "dev",
@@ -150,26 +163,42 @@ values = [
 ]
 
 [[tool.bumpversion.files]]
+# This section is managed by the cookiecutter templates.
 filename = "./pulp-glue-ostree/pulp_glue/ostree/__init__.py"
 search = "__version__ = \"{current_version}\""
 replace = "__version__ = \"{new_version}\""
 
 [[tool.bumpversion.files]]
+# This section is managed by the cookiecutter templates.
 filename = "./pulpcore/cli/ostree/__init__.py"
 search = "__version__ = \"{current_version}\""
 replace = "__version__ = \"{new_version}\""
 
 [[tool.bumpversion.files]]
+# This section is managed by the cookiecutter templates.
 filename = "./pulp-glue-ostree/pyproject.toml"
 search = "version = \"{current_version}\""
 replace = "version = \"{new_version}\""
 
 [[tool.bumpversion.files]]
+# This section is managed by the cookiecutter templates.
 filename = "./pyproject.toml"
 search = "version = \"{current_version}\""
 replace = "version = \"{new_version}\""
 
 [[tool.bumpversion.files]]
+# This section is managed by the cookiecutter templates.
 filename = "./pyproject.toml"
 search = "\"pulp-glue-ostree=={current_version}\""
 replace = "\"pulp-glue-ostree=={new_version}\""
+
+
+[tool.flake8]
+# This section is managed by the cookiecutter templates.
+exclude = ["./docs/*"]
+ignore = ["W503", "Q000", "Q003", "D100", "D104", "D106", "D200", "D202", "D205", "D400", "D401", "D402"]
+# E203: whitespace before ':'; https://github.com/psf/black/issues/279
+# E401: multiple imports on one line
+extend-ignore = ["E203", "E401"]
+max-line-length = 100
+

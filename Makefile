@@ -33,5 +33,5 @@ tests/cli.toml:
 	@echo "In order to configure the tests to talk to your test server, you might need to edit $@ ."
 
 test: | tests/cli.toml
-	pytest -v tests
+	python3 -m pytest -v tests pulp-glue-ostree/tests
 .PHONY: build info black lint test
