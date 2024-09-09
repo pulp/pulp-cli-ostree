@@ -1,3 +1,4 @@
+---
 name: "Test"
 
 on:
@@ -51,7 +52,7 @@ jobs:
         uses: "actions/setup-python@v5"
         with:
           python-version: "${{ matrix.python }}"
-      - name: "Install Test Dependencies"
+      - name: "Install Python Test Dependencies"
         run: |
           if [ "${{matrix.lower_bounds}}" ]
           then
@@ -68,11 +69,14 @@ jobs:
       - name: Install the ostree utility
         run: sudo apt update && sudo apt-get install -y ostree
       # ------------------------------------------------
-      - name: Run tests
+      - name: "Run tests"
         env:
-          CONTAINER_RUNTIME: ${{ matrix.container_runtime }}
-          IMAGE_TAG: ${{ matrix.image_tag }}
-          FROM_TAG: ${{ matrix.from_tag }}
-          CONTAINER_FILE: ${{ matrix.container_file }}
-          PULP_API_ROOT: ${{ matrix.pulp_api_root }}
-        run: .ci/run_container.sh make test
+          CONTAINER_RUNTIME: "${{ matrix.container_runtime }}"
+          IMAGE_TAG: "${{ matrix.image_tag }}"
+          FROM_TAG: "${{ matrix.from_tag }}"
+          CONTAINER_FILE: "${{ matrix.container_file }}"
+          PULP_HTTPS: "${{ matrix.pulp_https }}"
+          PULP_API_ROOT: "${{ matrix.pulp_api_root }}"
+        run: |
+          .ci/run_container.sh make test
+...
