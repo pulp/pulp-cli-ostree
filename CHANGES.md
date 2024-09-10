@@ -10,7 +10,7 @@
 
 [//]: # (towncrier release notes start)
 
-## 0.4.0 (2024-04-30)
+## 0.4.0 (2024-04-30) {: #0.4.0 }
 
 
 #### Features {: #0.4.0-feature }
@@ -27,14 +27,13 @@
 
 ---
 
-## 0.3.0 (2024-04-23)
-
+## 0.3.0 (2024-04-23) {: #0.3.0 }
 
 
 No significant changes.
 
 
-### Pulp GLUE ostree
+### Pulp GLUE ostree {: #0.3.0-pulp-glue-ostree }
 
 
 No significant changes.
@@ -42,17 +41,17 @@ No significant changes.
 
 ---
 
-## 0.2.0 (2023-11-16)
-=====================
+## 0.2.0 (2023-11-16) {: #0.2.0 }
 
 
-### Misc
+### Misc {: #0.2.0-misc }
 
 - [#59](https://github.com/pulp/pulp-cli-ostree/issues/59)
 
 
----## 0.1.1 (2023-05-15)
-=====================
+---
+
+## 0.1.1 (2023-05-15) {: #0.1.1 }
 
 
 No significant changes.
@@ -61,8 +60,7 @@ No significant changes.
 ---
 
 
-## 0.1.0 (2023-04-03)
-=====================
+## 0.1.0 (2023-04-03) {: #0.1.0 }
 
 
 ### Features
@@ -74,7 +72,7 @@ No significant changes.
 ---
 
 
-## 0.0.3 (2022-06-24)
+## 0.0.3 (2022-06-24) {: #0.0.3 }
 
 ### Features
 
@@ -89,7 +87,7 @@ No significant changes.
 ---
 
 
-## 0.0.2 (2022-02-12)
+## 0.0.2 (2022-02-12) {: #0.0.2 }
 
 ### Features
 
@@ -100,7 +98,7 @@ No significant changes.
 ---
 
 
-## 0.0.1 (2022-01-12)
+## 0.0.1 (2022-01-12) {: #0.0.1 }
 
 ### Features
 
