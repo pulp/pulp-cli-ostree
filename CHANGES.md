@@ -10,6 +10,21 @@
 
 [//]: # (towncrier release notes start)
 
+## 0.5.0 (2025-02-11) {: #0.5.0 }
+
+
+
+No significant changes.
+
+
+### Pulp-ostree GLUE {: #0.5.0-pulp-ostree-glue }
+
+
+No significant changes.
+
+
+---
+
 ## 0.4.0 (2024-04-30) {: #0.4.0 }
 
 
