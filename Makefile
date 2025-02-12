@@ -12,7 +12,9 @@ build:
 	cd pulp-glue-ostree; pyproject-build -n
 	pyproject-build -n
 
-black:
+black: format
+
+format:
 	isort .
 	cd pulp-glue-ostree; isort .
 	black .
@@ -34,4 +36,13 @@ tests/cli.toml:
 
 test: | tests/cli.toml
 	python3 -m pytest -v tests pulp-glue-ostree/tests
+
+livetest: | tests/cli.toml
+	python3 -m pytest -v tests pulp-glue-ostree/tests -m live
+
+unittest:
+	python3 -m pytest -v tests pulp-glue-ostree/tests -m "not live"
+
+unittest_glue:
+	python3 -m pytest -v pulp-glue-ostree/tests -m "not live"
 .PHONY: build info black lint test
