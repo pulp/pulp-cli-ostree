@@ -52,23 +52,22 @@ jobs:
         uses: "actions/setup-python@v5"
         with:
           python-version: "${{ matrix.python }}"
+          allow-prereleases: true
+      - name: "Install Binary Test Dependencies"
+        run: |
+          sudo apt-get install ostree
       - name: "Install Python Test Dependencies"
         run: |
           if [ "${{matrix.lower_bounds}}" ]
           then
-            # ------ DO NOT LET THE TEMPLATE REMOVE THIS -----
-            # https://github.com/yaml/pyyaml/issues/601#issuecomment-1834630109
-            pip install "cython<3.0.0" wheel
-            pip install "pyyaml==5.4.1" --no-build-isolation
-            # ------------------------------------------------
             pip install dist/pulp_cli_ostree-*.whl pulp-glue-ostree/dist/pulp_glue_ostree-*.whl -r test_requirements.txt -c lower_bounds_constraints.lock
+          elif [ "${{matrix.upper_bounds}}" ]
+          then
+            .ci/scripts/calc_constraints.py pyproject.toml pulp-glue-ostree/pyproject.toml  --upper > upper_bounds_constraints.lock
+            pip install dist/pulp_cli_ostree-*.whl pulp-glue-ostree/dist/pulp_glue_ostree-*.whl -r test_requirements.txt -c upper_bounds_constraints.lock
           else
             pip install dist/pulp_cli_ostree-*.whl pulp-glue-ostree/dist/pulp_glue_ostree-*.whl -r test_requirements.txt
           fi
-      # ------ DO NOT LET THE TEMPLATE REMOVE THIS -----
-      - name: Install the ostree utility
-        run: sudo apt update && sudo apt-get install -y ostree
-      # ------------------------------------------------
       - name: "Run tests"
         env:
           CONTAINER_RUNTIME: "${{ matrix.container_runtime }}"
@@ -76,6 +75,7 @@ jobs:
           FROM_TAG: "${{ matrix.from_tag }}"
           CONTAINER_FILE: "${{ matrix.container_file }}"
           PULP_HTTPS: "${{ matrix.pulp_https }}"
+          PULP_OAUTH2: "${{ matrix.pulp_oauth2 }}"
           PULP_API_ROOT: "${{ matrix.pulp_api_root }}"
         run: |
           .ci/run_container.sh make test

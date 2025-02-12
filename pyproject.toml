@@ -54,7 +54,8 @@ glue = true
 docs = false
 translations = false
 main_package = "ostree"
-binary_dependencies = ""
+binary_dependencies = "ostree"
+unittests = false
 
 [tool.towncrier]
 # This section is managed by the cookiecutter templates.
@@ -104,7 +105,7 @@ showcontent = true
 # This section is managed by the cookiecutter templates.
 directory = "misc"
 name = "Misc"
-showcontent = false
+showcontent = true
 
 
 [tool.black]
