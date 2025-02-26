@@ -25,6 +25,7 @@ lint:
 	cd pulp-glue-ostree; isort -c --diff .
 	black --diff --check .
 	flake8
+	.ci/scripts/check_cli_dependencies.py
 	.ci/scripts/check_click_for_mypy.py
 	MYPYPATH=pulp-glue-ostree mypy
 	cd pulp-glue-ostree; mypy
