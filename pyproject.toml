@@ -116,7 +116,7 @@ line-length = 100
 # This section is managed by the cookiecutter templates.
 profile = "black"
 line_length = 100
-skip = ["pulp-glue-ostree"]
+extend_skip = ["pulp-glue-ostree"]
 
 [tool.pytest.ini_options]
 markers = [
@@ -202,3 +202,4 @@ ignore = ["W503", "Q000", "Q003", "D100", "D104", "D106", "D200", "D202", "D205"
 # E401: multiple imports on one line
 extend-ignore = ["E203", "E401"]
 max-line-length = 100
+
