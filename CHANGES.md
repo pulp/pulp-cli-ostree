@@ -10,6 +10,23 @@
 
 [//]: # (towncrier release notes start)
 
+## 0.6.0 (2025-08-14) {: #0.6.0 }
+
+
+
+#### Deprecations and Removals {: #0.6.0-removal }
+
+- Removed support for Python<3.9.
+
+
+### Pulp-ostree GLUE {: #0.6.0-pulp-ostree-glue }
+
+
+No significant changes.
+
+
+---
+
 ## 0.4.0 (2024-04-30) {: #0.4.0 }
 
 
