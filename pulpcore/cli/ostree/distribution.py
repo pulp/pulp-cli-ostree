@@ -122,7 +122,7 @@ def update(
             else:
                 distribution_ctx.update(body={"repository": ""}, non_blocking=True)
 
-            body["repository_version"] = f'{distribution["repository"]}versions/{version}/'
+            body["repository_version"] = f"{distribution['repository']}versions/{version}/"
         elif distribution["repository_version"]:
             repository_href = distribution["repository_version"].partition("versions")[0]
             body["repository_version"] = f"{repository_href}versions/{version}/"
