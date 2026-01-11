@@ -1,4 +1,11 @@
 #!/bin/python3
+# /// script
+# requires-python = ">=3.10"
+# dependencies = [
+#     "packaging>=25.0,<25.1",
+#     "tomli>=2.3.0,<2.4.0;python_version<'3.11'",
+# ]
+# ///
 
 import argparse
 import fileinput
