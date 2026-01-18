@@ -1,22 +1,6 @@
 from typing import IO, Any, Dict, Optional
 
 import click
-from pulp_glue.common.context import (
-    EntityFieldDefinition,
-    PluginRequirement,
-    PulpEntityContext,
-    PulpRemoteContext,
-    PulpRepositoryContext,
-)
-from pulp_glue.common.i18n import get_translation
-from pulp_glue.core.context import PulpArtifactContext
-from pulp_glue.ostree.context import (
-    PulpOstreeCommitContentContext,
-    PulpOstreeConfigContentContext,
-    PulpOstreeRefContentContext,
-    PulpOstreeRemoteContext,
-    PulpOstreeRepositoryContext,
-)
 from pulpcore.cli.common.generic import (
     GroupOption,
     PulpCLIContext,
@@ -41,6 +25,23 @@ from pulpcore.cli.common.generic import (
     version_command,
 )
 from pulpcore.cli.core.generic import task_command
+
+from pulp_glue.common.context import (
+    EntityFieldDefinition,
+    PluginRequirement,
+    PulpEntityContext,
+    PulpRemoteContext,
+    PulpRepositoryContext,
+)
+from pulp_glue.common.i18n import get_translation
+from pulp_glue.core.context import PulpArtifactContext
+from pulp_glue.ostree.context import (
+    PulpOstreeCommitContentContext,
+    PulpOstreeConfigContentContext,
+    PulpOstreeRefContentContext,
+    PulpOstreeRemoteContext,
+    PulpOstreeRepositoryContext,
+)
 
 translation = get_translation(__package__)
 _ = translation.gettext

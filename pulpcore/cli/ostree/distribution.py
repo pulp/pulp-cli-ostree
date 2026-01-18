@@ -1,9 +1,6 @@
 from typing import Optional, Union, cast
 
 import click
-from pulp_glue.common.context import EntityDefinition, PluginRequirement, PulpEntityContext
-from pulp_glue.common.i18n import get_translation
-from pulp_glue.ostree.context import PulpOstreeDistributionContext, PulpOstreeRepositoryContext
 from pulpcore.cli.common.generic import (
     PulpCLIContext,
     base_path_contains_option,
@@ -20,6 +17,10 @@ from pulpcore.cli.common.generic import (
     resource_option,
     show_command,
 )
+
+from pulp_glue.common.context import EntityDefinition, PluginRequirement, PulpEntityContext
+from pulp_glue.common.i18n import get_translation
+from pulp_glue.ostree.context import PulpOstreeDistributionContext, PulpOstreeRepositoryContext
 
 translation = get_translation(__package__)
 _ = translation.gettext
