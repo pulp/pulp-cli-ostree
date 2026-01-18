@@ -1,8 +1,9 @@
 from typing import Any
 
 import click
-from pulp_glue.common.i18n import get_translation
 from pulpcore.cli.common.generic import pulp_group
+
+from pulp_glue.common.i18n import get_translation
 
 from pulpcore.cli.ostree.distribution import distribution
 from pulpcore.cli.ostree.remote import remote
