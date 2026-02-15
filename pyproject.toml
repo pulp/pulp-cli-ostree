@@ -49,6 +49,7 @@ namespaces = true
 # This section is co-managed by the cookiecutter templates.
 # Changes to existing keys should be preserved.
 app_label = "ostree"
+src_layout = false
 repository = "https://github.com/pulp/pulp-cli-ostree"
 glue = true
 docs = false
@@ -122,6 +123,7 @@ strict = true
 warn_unused_ignores = false
 show_error_codes = true
 files = "pulpcore/**/*.py, tests/*.py"
+mypy_path = [".", "pulp-glue-ostree"]
 namespace_packages = true
 explicit_package_bases = true
 
@@ -198,5 +200,4 @@ extend-select = ["I"]
 # This section is managed by the cookiecutter templates.
 sections = { second-party = ["pulp_glue"] }
 section-order = ["future", "standard-library", "third-party", "second-party", "first-party", "local-folder"]
-
 
