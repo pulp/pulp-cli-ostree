@@ -1,6 +1,0 @@
-# Test requirements
-pygments
-pytest
-pytest-subtests
-python-gnupg
-trustme>=1.1.0,<1.3
