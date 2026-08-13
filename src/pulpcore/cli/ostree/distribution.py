@@ -1,7 +1,7 @@
-from typing import Optional, Union, cast
+from typing import cast
 
 import click
-from pulpcore.cli.common.generic import (
+from pulp_cli.generic import (
     PulpCLIContext,
     base_path_contains_option,
     base_path_option,
@@ -80,9 +80,9 @@ distribution.add_command(label_command())
 def update(
     pulp_ctx: PulpCLIContext,
     distribution_ctx: PulpEntityContext,
-    base_path: Optional[str],
-    repository: Optional[Union[str, PulpEntityContext]],
-    version: Optional[int],
+    base_path: str | None,
+    repository: str | PulpEntityContext | None,
+    version: int | None,
 ) -> None:
     assert isinstance(distribution_ctx, PulpOstreeDistributionContext)
 

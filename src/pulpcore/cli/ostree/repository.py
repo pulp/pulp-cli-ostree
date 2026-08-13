@@ -1,7 +1,7 @@
-from typing import IO, Any, Dict, Optional
+from typing import IO, Any
 
 import click
-from pulpcore.cli.common.generic import (
+from pulp_cli.generic import (
     GroupOption,
     PulpCLIContext,
     chunk_size_option,
@@ -173,7 +173,7 @@ def sync(
 
     repository = repository_ctx.entity
 
-    body: Dict[str, Any] = {}
+    body: dict[str, Any] = {}
 
     if isinstance(remote, PulpEntityContext):
         body["remote"] = remote.pulp_href
@@ -244,8 +244,8 @@ def import_commits(
     file: IO[bytes],
     chunk_size: int,
     repository_name: str,
-    ref: Optional[str],
-    parent_commit: Optional[str],
+    ref: str | None,
+    parent_commit: str | None,
 ) -> None:
     assert isinstance(repository_ctx, PulpOstreeRepositoryContext)
 

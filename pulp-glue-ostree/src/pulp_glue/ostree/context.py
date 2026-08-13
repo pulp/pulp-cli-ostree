@@ -1,5 +1,5 @@
 from gettext import gettext as _
-from typing import Any, ClassVar, Dict, Optional
+from typing import Any, ClassVar
 
 from pulp_glue.common.context import (
     EntityDefinition,
@@ -94,7 +94,7 @@ class PulpOstreeRepositoryContext(PulpRepositoryContext):
     }
 
     def import_all(self, href: str, artifact: str, repository_name: str) -> Any:
-        body: Dict[str, Any] = {
+        body: dict[str, Any] = {
             "artifact": artifact,
             "repository_name": repository_name,
         }
@@ -105,10 +105,10 @@ class PulpOstreeRepositoryContext(PulpRepositoryContext):
         href: str,
         artifact: str,
         repository_name: str,
-        ref: Optional[str] = None,
-        parent_commit: Optional[str] = None,
+        ref: str | None = None,
+        parent_commit: str | None = None,
     ) -> Any:
-        body: Dict[str, Any] = {
+        body: dict[str, Any] = {
             "artifact": artifact,
             "repository_name": repository_name,
         }
