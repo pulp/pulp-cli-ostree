@@ -1,7 +1,7 @@
 from typing import Any
 
 import click
-from pulpcore.cli.common.generic import pulp_group
+from pulp_cli.generic import pulp_group
 
 from pulp_glue.common.i18n import get_translation
 

@@ -7,7 +7,7 @@ name = "pulp-glue-ostree"
 version = "0.7.0.dev"
 description = "Version agnostic glue library to talk to pulpcore's REST API. (OSTree plugin)"
 readme = "README.md"
-requires-python = ">=3.9"
+requires-python = ">=3.10"
 license = {text = "GPLv2+"}
 authors = [
   {name = "Pulp Team", email = "pulp-list@redhat.com"},
@@ -23,7 +23,7 @@ classifiers = [
   "Typing :: Typed",
 ]
 dependencies = [
-  "pulp-glue<0.40,>=0.23.1",
+  "pulp-glue<0.40,>=0.32.4",
 ]
 
 [project.urls]
