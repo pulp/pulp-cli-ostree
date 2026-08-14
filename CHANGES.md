@@ -10,6 +10,59 @@
 
 [//]: # (towncrier release notes start)
 
+## 0.7.0 (2026-08-13) {: #0.7.0 }
+
+
+
+#### Deprecations and Removals {: #0.7.0-removal }
+
+- Raised the minimum required pulp-cli/pulp-glue version to 0.32.4.
+  [#168](https://github.com/pulp/pulp-cli-ostree/issues/168)
+
+
+### Pulp-ostree GLUE {: #0.7.0-pulp-ostree-glue }
+
+
+#### Deprecations and Removals {: #0.7.0-pulp-ostree-glue-removal }
+
+- Raised the minimum required pulp-glue version to 0.32.4.
+  [#168](https://github.com/pulp/pulp-cli-ostree/issues/168)
+
+
+---
+
+## 0.6.0 (2025-08-14) {: #0.6.0 }
+
+
+
+#### Deprecations and Removals {: #0.6.0-removal }
+
+- Removed support for Python<3.9.
+
+
+### Pulp-ostree GLUE {: #0.6.0-pulp-ostree-glue }
+
+
+No significant changes.
+
+
+---
+
+## 0.5.0 (2025-02-11) {: #0.5.0 }
+
+
+
+No significant changes.
+
+
+### Pulp-ostree GLUE {: #0.5.0-pulp-ostree-glue }
+
+
+No significant changes.
+
+
+---
+
 ## 0.4.0 (2024-04-30) {: #0.4.0 }
 
 
