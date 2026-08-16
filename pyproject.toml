@@ -207,7 +207,6 @@ section-order = ["future", "standard-library", "third-party", "second-party", "f
 "pulpcore.cli.common.generic".msg = "This module moved to 'pulp_cli.generic'."
 
 
-
 [tool.uv.sources]
 # This section is managed by the cookiecutter templates.
 pulp-glue-ostree = { workspace = true }
@@ -221,7 +220,6 @@ members = ["pulp-glue-ostree"]
 module-name = ["pulpcore.cli"]
 namespace = true
 source-exclude = ["*.pot", "*.po", "**/*\\~"]
-
 
 [dependency-groups]
 dev = [
