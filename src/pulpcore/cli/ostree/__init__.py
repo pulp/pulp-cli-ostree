@@ -12,7 +12,7 @@ from pulpcore.cli.ostree.repository import repository
 translation = get_translation(__package__)
 _ = translation.gettext
 
-__version__ = "0.7.1"
+__version__ = "0.7.2.dev"
 
 
 @pulp_group("ostree")
